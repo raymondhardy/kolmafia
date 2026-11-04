@@ -5,8 +5,8 @@ import net.sourceforge.kolmafia.KoLConstants;
 import net.sourceforge.kolmafia.KoLmafia;
 import net.sourceforge.kolmafia.swingui.CommandDisplayFrame;
 import net.sourceforge.kolmafia.swingui.listener.ThreadedListener;
-import net.sourceforge.kolmafia.utilities.ScriptMRUList;
 import net.sourceforge.kolmafia.swingui.widget.SwingInputFieldUtilities;
+import net.sourceforge.kolmafia.utilities.ScriptMRUList;
 
 /**
  * In order to keep the user interface from freezing (or at least appearing to freeze), this
