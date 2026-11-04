@@ -31,22 +31,16 @@
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]maximizer[\\/]Maximizer\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]moods[\\/]HPRestoreItemList\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]moods[\\/]MPRestoreItemList\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]persistence[\\/]ConcoctionDatabase\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]persistence[\\/]FamiliarDatabase\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]persistence[\\/]FaxBotDatabase\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]persistence[\\/]ItemDatabase\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]preferences[\\/]PreferenceListenerCheckBox\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]preferences[\\/]Preferences\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]request[\\/]CharPaneRequest\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]request[\\/]coinmaster[\\/]BountyHunterHunterRequest\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]RequestEditorKit\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]request[\\/]MallPurchaseRequest\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]request[\\/]RelayRequest\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]scripts[\\/]svn[\\/]SVNManager\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]EquipmentManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]LoginManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]MushroomManager\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]StoreManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]StaticEntity\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]textui[\\/]command[\\/]FaxbotCommand\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]textui[\\/]command[\\/]ShowDataCommand\.java$"/>

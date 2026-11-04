@@ -17,11 +17,14 @@ import javax.swing.SwingUtilities;
 import net.java.dev.spellcast.utilities.LockableListModel;
 import net.java.dev.spellcast.utilities.LockableListModel.ListElementFilter;
 import net.sourceforge.kolmafia.CreateFrameRunnable;
+import net.sourceforge.kolmafia.KoLAdventure;
 import net.sourceforge.kolmafia.KoLDesktop;
 import net.sourceforge.kolmafia.KoLmafiaGUI;
 import net.sourceforge.kolmafia.StaticEntity;
+import net.sourceforge.kolmafia.equipment.Slot;
 import net.sourceforge.kolmafia.preferences.Preferences;
 import net.sourceforge.kolmafia.request.GenericRequest;
+import net.sourceforge.kolmafia.swingui.panel.GearChangePanel;
 import net.sourceforge.kolmafia.swingui.widget.AutoFilterTextField;
 import net.sourceforge.kolmafia.swingui.widget.GenericScrollPane;
 import net.sourceforge.kolmafia.swingui.widget.InterruptableDialog;
@@ -183,6 +186,91 @@ public class SwingUserInterface implements UserInterface {
   @Override
   public void showBalloon(final String message, final boolean onlyShowWhenHidden) {
     SystemTrayFrame.showBalloon(message, onlyShowWhenHidden);
+  }
+
+  @Override
+  public void meatChanged() {
+    MallSearchFrame.updateMeat();
+  }
+
+  @Override
+  public void familiarsChanged() {
+    GearChangePanel.updateFamiliars();
+  }
+
+  @Override
+  public void familiarListCleared() {
+    GearChangePanel.clearFamiliarList();
+  }
+
+  @Override
+  public void skillsChanged() {
+    SkillBuffFrame.update();
+  }
+
+  @Override
+  public void safetyDetailsChanged() {
+    AdventureFrame.updateSafetyDetails();
+  }
+
+  @Override
+  public void selectedAdventureChanged(final KoLAdventure location) {
+    AdventureFrame.updateSelectedAdventure(location);
+  }
+
+  @Override
+  public void preferencesChanged() {
+    AdventureFrame.updateFromPreferences();
+  }
+
+  @Override
+  public void charPaneRefreshed() {
+    RequestFrame.refreshStatus();
+  }
+
+  @Override
+  public void pullsRemainingChanged(final int pullsRemaining) {
+    ItemManageFrame.updatePullsRemaining(pullsRemaining);
+  }
+
+  @Override
+  public void pullsBudgetedChanged(final int pullsBudgeted) {
+    ItemManageFrame.updatePullsBudgeted(pullsBudgeted);
+  }
+
+  @Override
+  public void storeEditingCancelled() {
+    StoreManageFrame.cancelTableEditing();
+  }
+
+  @Override
+  public void storeEarningsChanged(final long potentialEarnings) {
+    StoreManageFrame.updateEarnings(potentialEarnings);
+  }
+
+  @Override
+  public void equipmentListsCleared() {
+    GearChangePanel.clearEquipmentModels();
+  }
+
+  @Override
+  public void equipmentSlotChanged(final Slot slot) {
+    GearChangePanel.updateSlot(slot);
+  }
+
+  @Override
+  public void stickersChanged(final int st1, final int st2, final int st3) {
+    GearChangePanel.updateStickers(st1, st2, st3);
+  }
+
+  @Override
+  public void deferEquipmentUpdates() {
+    GearChangePanel.deferUpdate();
+  }
+
+  @Override
+  public void resolveDeferredEquipmentUpdates() {
+    GearChangePanel.resolveDeferredUpdate();
   }
 
   @Override
