@@ -394,4 +394,9 @@ public class SwingUserInterface implements UserInterface {
     frame.setTitle(title);
     frame.setVisible(true);
   }
+
+  @Override
+  public void maximizerExpressionChanged(final String expression) {
+    MaximizerFrame.expressionSelect.setSelectedItem(expression);
+  }
 }

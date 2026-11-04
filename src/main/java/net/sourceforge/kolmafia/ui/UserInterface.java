@@ -249,4 +249,6 @@ public interface UserInterface {
   default void chatClosed() {}
 
   default void showContacts(final String title, final LockableListModel<?> contacts) {}
+
+  default void maximizerExpressionChanged(final String expression) {}
 }
