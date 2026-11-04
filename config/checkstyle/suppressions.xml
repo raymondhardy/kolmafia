@@ -60,11 +60,9 @@
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]InventoryManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]LoginManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]LogoutManager\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]MushroomManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]StoreManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]StaticEntity\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]textui[\\/]command[\\/]FaxbotCommand\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]textui[\\/]command[\\/]ShowDataCommand\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]textui[\\/]command[\\/]TestCommand\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]textui[\\/]command[\\/]TrainFamiliarCommand\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]textui[\\/]RuntimeLibrary\.java$"/>
