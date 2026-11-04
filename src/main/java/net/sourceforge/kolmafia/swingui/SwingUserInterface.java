@@ -33,6 +33,7 @@ import net.sourceforge.kolmafia.request.GenericRequest;
 import net.sourceforge.kolmafia.swingui.panel.GearChangePanel;
 import net.sourceforge.kolmafia.swingui.widget.AutoFilterTextField;
 import net.sourceforge.kolmafia.swingui.widget.GenericScrollPane;
+import net.sourceforge.kolmafia.swingui.widget.GraphicsUtilities;
 import net.sourceforge.kolmafia.swingui.widget.InterruptableDialog;
 import net.sourceforge.kolmafia.swingui.widget.ListCellRendererFactory;
 import net.sourceforge.kolmafia.swingui.widget.SwingInputFieldUtilities;
@@ -461,5 +462,12 @@ public class SwingUserInterface implements UserInterface {
     }
 
     return "#" + Integer.toHexString(color.getRGB()).substring(2);
+  }
+
+  @Override
+  public void mergeImages(final List<String> paths, final String outputPath) {
+    var images = GraphicsUtilities.readImages(paths);
+    var generated = GraphicsUtilities.mergeImages(images);
+    GraphicsUtilities.writeImage(generated, outputPath);
   }
 }

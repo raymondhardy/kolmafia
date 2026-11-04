@@ -58,6 +58,8 @@ import net.sourceforge.kolmafia.session.InventoryManager;
 import net.sourceforge.kolmafia.swingui.button.DisplayFrameButton;
 import net.sourceforge.kolmafia.swingui.listener.ThreadedListener;
 import net.sourceforge.kolmafia.swingui.panel.StatusPanel;
+import net.sourceforge.kolmafia.swingui.widget.ImageIconFactory;
+import net.sourceforge.kolmafia.swingui.widget.ListCellRendererFactory;
 import net.sourceforge.kolmafia.swingui.widget.RequestPane;
 import net.sourceforge.kolmafia.swingui.widget.SwingInputFieldUtilities;
 import net.sourceforge.kolmafia.utilities.InputFieldUtilities;
@@ -189,7 +191,7 @@ public class FamiliarTrainingFrame extends GenericFrame {
 
       // Put familiar changer on top
       this.familiars = new ChangeComboBox(KoLCharacter.getFamiliarList());
-      this.familiars.setRenderer(FamiliarData.getRenderer());
+      this.familiars.setRenderer(ListCellRendererFactory.getFamiliarDataRenderer());
       container.add(this.familiars, BorderLayout.NORTH);
 
       // Put results in center
@@ -299,7 +301,7 @@ public class FamiliarTrainingFrame extends GenericFrame {
                   + "("
                   + opponent.getWeight()
                   + " lbs)</center></html>",
-              FamiliarDatabase.getFamiliarImage(opponent.getRace()),
+              ImageIconFactory.getFamiliarImage(opponent.getRace()),
               JLabel.CENTER);
 
           this.setVerticalTextPosition(JLabel.BOTTOM);

@@ -284,4 +284,7 @@ public interface UserInterface {
   default String getLookAndFeelColor(final String key) {
     return null;
   }
+
+  /** Draws the images at paths on top of each other and saves the result at outputPath. */
+  default void mergeImages(final List<String> paths, final String outputPath) {}
 }

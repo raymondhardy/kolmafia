@@ -60,6 +60,7 @@ import net.sourceforge.kolmafia.swingui.CommandDisplayFrame;
 import net.sourceforge.kolmafia.swingui.button.InvocationButton;
 import net.sourceforge.kolmafia.swingui.listener.ThreadedListener;
 import net.sourceforge.kolmafia.swingui.menu.ThreadedMenuItem;
+import net.sourceforge.kolmafia.swingui.widget.ImageIconFactory;
 import net.sourceforge.kolmafia.utilities.FileUtilities;
 import net.sourceforge.kolmafia.webui.CharPaneDecorator;
 
@@ -664,7 +665,7 @@ public class CompactSidePane extends JPanel implements Runnable {
       super(fam.getRace(), new FamiliarListener(fam));
 
       if (iconVersion) {
-        ImageIcon icon = FamiliarDatabase.getFamiliarImage(fam.getId());
+        ImageIcon icon = ImageIconFactory.getFamiliarImage(fam.getId());
         this.setIcon(icon);
         this.setText("");
         this.setToolTipText(fam.getRace());
@@ -693,7 +694,7 @@ public class CompactSidePane extends JPanel implements Runnable {
   private static class InstrumentMenuItem extends ThreadedMenuItem {
     public InstrumentMenuItem(final AdventureResult item) {
       super(item.getName(), new UseItemListener(item));
-      ImageIcon icon = ItemDatabase.getItemImage(item.getItemId());
+      ImageIcon icon = ImageIconFactory.getItemImage(item.getItemId());
       this.setIcon(icon);
       icon.setImageObserver(this);
     }
@@ -715,7 +716,7 @@ public class CompactSidePane extends JPanel implements Runnable {
   private static class ServantMenuItem extends ThreadedMenuItem {
     public ServantMenuItem(final EdServantData servant) {
       super(servant.getType(), new ChangeServantListener(servant));
-      ImageIcon icon = FileUtilities.downloadIcon(servant.getImage(), "itemimages", "debug.gif");
+      ImageIcon icon = ImageIconFactory.downloadIcon(servant.getImage(), "itemimages", "debug.gif");
       this.setIcon(icon);
       icon.setImageObserver(this);
     }
@@ -1149,7 +1150,7 @@ public class CompactSidePane extends JPanel implements Runnable {
   }
 
   private class FamiliarLabel extends JLabel implements Listener {
-    private final ImageIcon noFamiliarImage = FamiliarDatabase.getNoFamiliarImage();
+    private final ImageIcon noFamiliarImage = ImageIconFactory.getNoFamiliarImage();
 
     public FamiliarLabel() {
       super(" ", null, SwingConstants.CENTER);
@@ -1285,7 +1286,7 @@ public class CompactSidePane extends JPanel implements Runnable {
 
       this.setToolTipText(nextFamiliarOwner + "'s " + nextFamiliarRace);
 
-      ImageIcon icon = FamiliarDatabase.getFamiliarImage(nextFamiliarRace);
+      ImageIcon icon = ImageIconFactory.getFamiliarImage(nextFamiliarRace);
       ImageIcon scaled =
           new ImageIcon(icon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
       this.setIcon(scaled);
