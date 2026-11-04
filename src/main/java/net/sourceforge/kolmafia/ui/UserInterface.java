@@ -24,8 +24,9 @@ import net.sourceforge.kolmafia.utilities.StringUtilities;
  * showing things, and hearing that something changed. See devdoc/engine-ui-separation.md.
  *
  * <p>Every method has a default that works without a display: prompts are asked on the console, the
- * way KoLmafia has always asked them when running headless, and everything else does nothing. A
- * user interface overrides only what it supports.
+ * way KoLmafia has always asked them when running headless; work for the user interface thread runs
+ * on a background thread of its own, one task at a time; and everything else does nothing. A user
+ * interface overrides only what it supports.
  */
 public interface UserInterface {
   default void alert(final String message) {
@@ -228,12 +229,15 @@ public interface UserInterface {
 
   /** Whether this is the thread that updates the user interface. */
   default boolean isUiThread() {
-    return false;
+    return UserInterfaceThread.isCurrent();
   }
 
-  /** Runs work on the user interface's thread; without one, runs it now. */
+  /**
+   * Runs work on the user interface's thread, one task at a time and in order. Without a thread of
+   * its own, a user interface gets a background thread that does the same.
+   */
   default void invokeLater(final Runnable runnable) {
-    runnable.run();
+    UserInterfaceThread.execute(runnable);
   }
 
   // Session
