@@ -44,6 +44,7 @@ import net.sourceforge.kolmafia.maximizer.MaximizerSpeculation;
 import net.sourceforge.kolmafia.maximizer.PriceLevel;
 import net.sourceforge.kolmafia.persistence.ConcoctionDatabase;
 import net.sourceforge.kolmafia.preferences.Preferences;
+import net.sourceforge.kolmafia.swingui.menu.MRUListComboBoxes;
 import net.sourceforge.kolmafia.swingui.panel.GenericPanel;
 import net.sourceforge.kolmafia.swingui.panel.ScrollableFilteredPanel;
 import net.sourceforge.kolmafia.swingui.widget.AutoFilterTextField;
@@ -71,7 +72,7 @@ public class MaximizerFrame extends GenericFrame implements ListSelectionListene
     // CLI "maximize" command can set the selected item prior to the
     // frame being instantiated.
     expressionSelect.setEditable(true);
-    KoLConstants.maximizerMList.updateJComboData(expressionSelect);
+    MRUListComboBoxes.updateJComboData(KoLConstants.maximizerMList, expressionSelect);
   }
 
   private SmartButtonGroup equipmentSelect, mallSelect;
@@ -108,7 +109,7 @@ public class MaximizerFrame extends GenericFrame implements ListSelectionListene
       this.valueChanged(null);
     } else {
       if (Preferences.getInteger("maximizerMRUSize") > 0) {
-        KoLConstants.maximizerMList.updateJComboData(expressionSelect);
+        MRUListComboBoxes.updateJComboData(KoLConstants.maximizerMList, expressionSelect);
       }
     }
     for (KoLConstants.filterType f : KoLConstants.filterType.values()) {
@@ -158,7 +159,7 @@ public class MaximizerFrame extends GenericFrame implements ListSelectionListene
       this.listTitle.setText(buff.toString());
     }
     if (Preferences.getInteger("maximizerMRUSize") > 0) {
-      KoLConstants.maximizerMList.updateJComboData(expressionSelect);
+      MRUListComboBoxes.updateJComboData(KoLConstants.maximizerMList, expressionSelect);
     }
   }
 
