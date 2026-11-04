@@ -23,7 +23,6 @@ import java.util.Set;
 import java.util.TimeZone;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import net.java.dev.spellcast.utilities.ActionPanel;
 import net.java.dev.spellcast.utilities.JComponentUtilities;
@@ -114,13 +113,13 @@ import net.sourceforge.kolmafia.session.VolcanoMazeManager;
 import net.sourceforge.kolmafia.session.VoteMonsterManager;
 import net.sourceforge.kolmafia.session.YouRobotManager;
 import net.sourceforge.kolmafia.swingui.AdventureFrame;
-import net.sourceforge.kolmafia.swingui.DescriptionFrame;
 import net.sourceforge.kolmafia.swingui.GenericFrame;
 import net.sourceforge.kolmafia.swingui.SystemTrayFrame;
 import net.sourceforge.kolmafia.swingui.listener.LicenseDisplayListener;
 import net.sourceforge.kolmafia.swingui.panel.GearChangePanel;
 import net.sourceforge.kolmafia.swingui.panel.GenericPanel;
 import net.sourceforge.kolmafia.textui.AshRuntime;
+import net.sourceforge.kolmafia.ui.UserInterfaceManager;
 import net.sourceforge.kolmafia.utilities.LockableListFactory;
 import net.sourceforge.kolmafia.utilities.LogStream;
 import net.sourceforge.kolmafia.utilities.StringUtilities;
@@ -734,7 +733,7 @@ public abstract class KoLmafia {
 
       KoLmafia.refreshSessionData();
 
-      AdventureFrame.updateFromPreferences();
+      UserInterfaceManager.getUserInterface().preferencesChanged();
 
       // It would be nice to not have to do this
       IslandManager.ensureUpdatedBigIsland();
@@ -1059,7 +1058,7 @@ public abstract class KoLmafia {
 
     // Retrieve the Terrarium
     RequestThread.postRequest(new FamiliarRequest());
-    GearChangePanel.updateFamiliars();
+    UserInterfaceManager.getUserInterface().familiarsChanged();
 
     // Available stuff in Clan may have changed, so check clan
     ClanLoungeRequest.updateLounge();
@@ -1534,14 +1533,14 @@ public abstract class KoLmafia {
 
   /** Show an HTML string to the user */
   public static void showHTML(String location, String text) {
-    if (!GenericFrame.instanceExists()) {
+    if (!UserInterfaceManager.getUserInterface().hasOpenWindows()) {
       KoLmafiaCLI.showHTML(text);
       return;
     }
 
     GenericRequest request = new GenericRequest(location);
     request.responseText = text;
-    DescriptionFrame.showRequest(request);
+    UserInterfaceManager.getUserInterface().showDescription(request);
   }
 
   /**
@@ -1887,7 +1886,7 @@ public abstract class KoLmafia {
 
     QuitRunnable quitRunnable = new QuitRunnable();
 
-    if (SwingUtilities.isEventDispatchThread()) {
+    if (UserInterfaceManager.getUserInterface().isUiThread()) {
       KoLmafia.updateDisplay("Logout in progress (interface will be unresponsive)...");
       KoLmafia.allowDisplayUpdate = false;
 
@@ -1924,7 +1923,7 @@ public abstract class KoLmafia {
   }
 
   public static void preferences() {
-    KoLmafiaGUI.constructFrame("OptionsFrame");
+    UserInterfaceManager.getUserInterface().showWindow("OptionsFrame");
   }
 
   public static void preferencesThreaded() {
@@ -1934,7 +1933,7 @@ public abstract class KoLmafia {
   private static class PreferencesRunnable implements Runnable {
     @Override
     public void run() {
-      KoLmafiaGUI.constructFrame("OptionsFrame");
+      UserInterfaceManager.getUserInterface().showWindow("OptionsFrame");
     }
   }
 }
