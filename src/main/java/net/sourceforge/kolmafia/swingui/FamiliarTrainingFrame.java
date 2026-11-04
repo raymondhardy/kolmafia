@@ -58,6 +58,7 @@ import net.sourceforge.kolmafia.session.InventoryManager;
 import net.sourceforge.kolmafia.swingui.button.DisplayFrameButton;
 import net.sourceforge.kolmafia.swingui.listener.ThreadedListener;
 import net.sourceforge.kolmafia.swingui.panel.StatusPanel;
+import net.sourceforge.kolmafia.swingui.widget.ChatBufferDisplay;
 import net.sourceforge.kolmafia.swingui.widget.ImageIconFactory;
 import net.sourceforge.kolmafia.swingui.widget.ListCellRendererFactory;
 import net.sourceforge.kolmafia.swingui.widget.RequestPane;
@@ -575,7 +576,8 @@ public class FamiliarTrainingFrame extends GenericFrame {
         this.setLayout(new BorderLayout(10, 10));
 
         RequestPane resultsDisplay = new RequestPane();
-        JScrollPane scroller = FamiliarTrainingFrame.results.addDisplay(resultsDisplay);
+        JScrollPane scroller =
+            ChatBufferDisplay.addDisplay(FamiliarTrainingFrame.results, resultsDisplay);
         JComponentUtilities.setComponentSize(scroller, 400, 400);
 
         this.add(scroller, BorderLayout.CENTER);
