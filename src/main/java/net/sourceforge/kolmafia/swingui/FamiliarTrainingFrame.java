@@ -35,7 +35,12 @@ import net.sourceforge.kolmafia.session.FamiliarTrainingManager.Goal;
 import net.sourceforge.kolmafia.swingui.button.DisplayFrameButton;
 import net.sourceforge.kolmafia.swingui.listener.ThreadedListener;
 import net.sourceforge.kolmafia.swingui.panel.StatusPanel;
+import net.sourceforge.kolmafia.swingui.widget.ChatBufferDisplay;
+import net.sourceforge.kolmafia.swingui.widget.ImageIconFactory;
+import net.sourceforge.kolmafia.swingui.widget.ListCellRendererFactory;
 import net.sourceforge.kolmafia.swingui.widget.RequestPane;
+import net.sourceforge.kolmafia.swingui.widget.SwingInputFieldUtilities;
+import net.sourceforge.kolmafia.swingui.widget.SwingListModel;
 import net.sourceforge.kolmafia.utilities.InputFieldUtilities;
 import net.sourceforge.kolmafia.utilities.LogStream;
 
@@ -87,7 +92,7 @@ public class FamiliarTrainingFrame extends GenericFrame {
 
       // Put familiar changer on top
       this.familiars = new ChangeComboBox(KoLCharacter.getFamiliarList());
-      this.familiars.setRenderer(FamiliarData.getRenderer());
+      this.familiars.setRenderer(ListCellRendererFactory.getFamiliarDataRenderer());
       container.add(this.familiars, BorderLayout.NORTH);
 
       // Put results in center
@@ -197,7 +202,7 @@ public class FamiliarTrainingFrame extends GenericFrame {
                   + "("
                   + opponent.getWeight()
                   + " lbs)</center></html>",
-              FamiliarDatabase.getFamiliarImage(opponent.getRace()),
+              ImageIconFactory.getFamiliarImage(opponent.getRace()),
               JLabel.CENTER);
 
           this.setVerticalTextPosition(JLabel.BOTTOM);
@@ -363,7 +368,7 @@ public class FamiliarTrainingFrame extends GenericFrame {
                   @Override
                   public void run() {
                     SaveListener.this.output =
-                        InputFieldUtilities.chooseOutputFile(
+                        SwingInputFieldUtilities.chooseOutputFile(
                             KoLConstants.DATA_LOCATION, FamiliarTrainingFrame.this);
                     SaveListener.this.content =
                         FamiliarTrainingManager.getResults().getHTMLContent();
@@ -472,7 +477,8 @@ public class FamiliarTrainingFrame extends GenericFrame {
         this.setLayout(new BorderLayout(10, 10));
 
         RequestPane resultsDisplay = new RequestPane();
-        JScrollPane scroller = FamiliarTrainingManager.getResults().addDisplay(resultsDisplay);
+        JScrollPane scroller =
+            ChatBufferDisplay.addDisplay(FamiliarTrainingManager.getResults(), resultsDisplay);
         JComponentUtilities.setComponentSize(scroller, 400, 400);
 
         this.add(scroller, BorderLayout.CENTER);
@@ -481,7 +487,7 @@ public class FamiliarTrainingFrame extends GenericFrame {
 
     private class ChangeComboBox extends JComboBox<FamiliarData> {
       public ChangeComboBox(final LockableListModel<FamiliarData> selector) {
-        super(selector);
+        super(SwingListModel.of(selector));
         this.addActionListener(new ChangeComboBoxListener());
       }
 

@@ -5,8 +5,8 @@ import net.sourceforge.kolmafia.KoLConstants;
 import net.sourceforge.kolmafia.KoLmafia;
 import net.sourceforge.kolmafia.swingui.CommandDisplayFrame;
 import net.sourceforge.kolmafia.swingui.listener.ThreadedListener;
-import net.sourceforge.kolmafia.utilities.InputFieldUtilities;
 import net.sourceforge.kolmafia.utilities.ScriptMRUList;
+import net.sourceforge.kolmafia.swingui.widget.SwingInputFieldUtilities;
 
 /**
  * In order to keep the user interface from freezing (or at least appearing to freeze), this
@@ -48,7 +48,7 @@ public class LoadScriptMenuItem extends ThreadedMenuItem {
       this.executePath = LoadScriptMenuItem.this.scriptPath;
 
       if (this.executePath == null) {
-        File input = InputFieldUtilities.chooseInputFile(KoLConstants.SCRIPT_LOCATION, null);
+        File input = SwingInputFieldUtilities.chooseInputFile(KoLConstants.SCRIPT_LOCATION, null);
         if (input == null) {
           return;
         }

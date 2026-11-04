@@ -55,6 +55,8 @@ import net.sourceforge.kolmafia.swingui.widget.AutoFilterTextField;
 import net.sourceforge.kolmafia.swingui.widget.AutoHighlightTextField;
 import net.sourceforge.kolmafia.swingui.widget.GenericScrollPane;
 import net.sourceforge.kolmafia.swingui.widget.ShowDescriptionTable;
+import net.sourceforge.kolmafia.swingui.widget.SwingInputFieldUtilities;
+import net.sourceforge.kolmafia.swingui.widget.SwingListModel;
 import net.sourceforge.kolmafia.utilities.InputFieldUtilities;
 import net.sourceforge.kolmafia.utilities.StringUtilities;
 import org.jdesktop.swingx.decorator.AbstractHighlighter;
@@ -95,7 +97,7 @@ public class StoreManageFrame extends GenericPanelFrame {
 
   public static final void cancelTableEditing() {
     if (StoreManageFrame.INSTANCE != null) {
-      InputFieldUtilities.cancelTableEditing(StoreManageFrame.INSTANCE.manageTable);
+      SwingInputFieldUtilities.cancelTableEditing(StoreManageFrame.INSTANCE.manageTable);
     }
   }
 
@@ -134,7 +136,7 @@ public class StoreManageFrame extends GenericPanelFrame {
 
     @Override
     public void actionConfirmed() {
-      if (!InputFieldUtilities.finalizeTable(StoreManageFrame.this.manageTable)) {
+      if (!SwingInputFieldUtilities.finalizeTable(StoreManageFrame.this.manageTable)) {
         return;
       }
 
@@ -637,7 +639,8 @@ public class StoreManageFrame extends GenericPanelFrame {
       container.add(StoreManageFrame.searchLabel, BorderLayout.NORTH);
       JComponentUtilities.setComponentSize(StoreManageFrame.searchLabel, 150, 16);
 
-      StoreManageFrame.this.resultsDisplay = new JList<>(StoreManageFrame.priceSummary);
+      StoreManageFrame.this.resultsDisplay =
+          new JList<>(SwingListModel.of(StoreManageFrame.priceSummary));
       StoreManageFrame.this.resultsDisplay.setPrototypeCellValue("1234567890ABCDEF");
       StoreManageFrame.this.resultsDisplay.setVisibleRowCount(11);
       StoreManageFrame.this.resultsDisplay.setSelectionMode(
@@ -652,7 +655,12 @@ public class StoreManageFrame extends GenericPanelFrame {
 
   private static class StoreLogPanel extends ScrollablePanel<JList<StoreLogEntry>> {
     public StoreLogPanel() {
-      super("", "refresh", "resort", new JList<>(StoreManager.getStoreLog()), false);
+      super(
+          "",
+          "refresh",
+          "resort",
+          new JList<>(SwingListModel.of(StoreManager.getStoreLog())),
+          false);
 
       JPanel northPanel = new JPanel(new BorderLayout());
       this.actualPanel.add(northPanel, BorderLayout.NORTH);

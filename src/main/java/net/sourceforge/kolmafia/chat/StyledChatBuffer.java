@@ -1,11 +1,10 @@
 package net.sourceforge.kolmafia.chat;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.SwingUtilities;
 import net.java.dev.spellcast.utilities.DataUtilities;
 import net.sourceforge.kolmafia.preferences.Preferences;
+import net.sourceforge.kolmafia.ui.UserInterfaceManager;
 
 public class StyledChatBuffer extends ChatBuffer {
   private static int highlightCount = 0;
@@ -36,7 +35,7 @@ public class StyledChatBuffer extends ChatBuffer {
     String[] highlightList = highlights.split("\n+");
 
     for (int i = 0; i < highlightList.length; ++i) {
-      StyledChatBuffer.addHighlight(highlightList[i], DataUtilities.toColor(highlightList[++i]));
+      StyledChatBuffer.addHighlight(highlightList[i], highlightList[++i]);
     }
 
     return true;
@@ -51,15 +50,28 @@ public class StyledChatBuffer extends ChatBuffer {
     return searchString + "\n" + colorString;
   }
 
-  public static String addHighlight(final String searchString, final Color color) {
+  public static String addHighlight(final String searchString, final String color) {
     ++StyledChatBuffer.highlightCount;
 
-    String colorString = DataUtilities.toHexString(color);
+    String colorString = StyledChatBuffer.toHexString(color);
 
     StyledChatBuffer.searchStrings.add(searchString.toLowerCase());
     StyledChatBuffer.colorStrings.add(colorString);
 
     return searchString + "\n" + colorString;
+  }
+
+  /** Writes a "#rrggbb" color the way highlights are stored: six lower case digits. */
+  private static String toHexString(final String color) {
+    int red = Character.digit(color.charAt(1), 16) * 16 + Character.digit(color.charAt(2), 16);
+    int green = Character.digit(color.charAt(3), 16) * 16 + Character.digit(color.charAt(4), 16);
+    int blue = Character.digit(color.charAt(5), 16) * 16 + Character.digit(color.charAt(6), 16);
+
+    if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255) {
+      throw new IllegalArgumentException("Color parameter outside of expected range: " + color);
+    }
+
+    return "#" + DataUtilities.toHexString((red << 16) | (green << 8) | blue, 6);
   }
 
   /** Appends the given message to the chat buffer. */
@@ -95,16 +107,17 @@ public class StyledChatBuffer extends ChatBuffer {
   }
 
   public void applyHighlights() {
-    SwingUtilities.invokeLater(
-        () -> {
-          String[] lines = this.getContent().split("<br>");
+    UserInterfaceManager.getUserInterface()
+        .invokeLater(
+            () -> {
+              String[] lines = this.getContent().split("<br>");
 
-          this.clear();
+              this.clear();
 
-          for (String line : lines) {
-            this.append(line + "<br>");
-          }
-        });
+              for (String line : lines) {
+                this.append(line + "<br>");
+              }
+            });
   }
 
   private String applyHighlight(

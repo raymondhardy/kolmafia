@@ -1,11 +1,5 @@
 package net.sourceforge.kolmafia;
 
-import static net.sourceforge.kolmafia.KoLGUIConstants.FLATMAP_DARK_LOOKS;
-import static net.sourceforge.kolmafia.KoLGUIConstants.FLATMAP_LIGHT_LOOKS;
-
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.Taskbar;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -17,16 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TimeZone;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import net.java.dev.spellcast.utilities.ActionPanel;
-import net.java.dev.spellcast.utilities.JComponentUtilities;
 import net.sourceforge.kolmafia.AdventureResult.AdventureLongCountResult;
 import net.sourceforge.kolmafia.KoLConstants.CraftingType;
 import net.sourceforge.kolmafia.KoLConstants.MafiaState;
@@ -113,18 +99,11 @@ import net.sourceforge.kolmafia.session.ValhallaManager;
 import net.sourceforge.kolmafia.session.VolcanoMazeManager;
 import net.sourceforge.kolmafia.session.VoteMonsterManager;
 import net.sourceforge.kolmafia.session.YouRobotManager;
-import net.sourceforge.kolmafia.swingui.AdventureFrame;
-import net.sourceforge.kolmafia.swingui.DescriptionFrame;
-import net.sourceforge.kolmafia.swingui.GenericFrame;
-import net.sourceforge.kolmafia.swingui.SystemTrayFrame;
-import net.sourceforge.kolmafia.swingui.listener.LicenseDisplayListener;
-import net.sourceforge.kolmafia.swingui.panel.GearChangePanel;
-import net.sourceforge.kolmafia.swingui.panel.GenericPanel;
 import net.sourceforge.kolmafia.textui.AshRuntime;
+import net.sourceforge.kolmafia.ui.UserInterfaceManager;
 import net.sourceforge.kolmafia.utilities.LockableListFactory;
 import net.sourceforge.kolmafia.utilities.LogStream;
 import net.sourceforge.kolmafia.utilities.StringUtilities;
-import net.sourceforge.kolmafia.utilities.SwinglessUIUtils;
 import net.sourceforge.kolmafia.webui.RelayServer;
 
 public abstract class KoLmafia {
@@ -141,9 +120,7 @@ public abstract class KoLmafia {
     System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
     System.setProperty("java.net.preferIPv4Stack", "true");
 
-    if (SwinglessUIUtils.isSwingAvailable()) {
-      JEditorPane.registerEditorKitForContentType("text/html", RequestEditorKit.class.getName());
-    }
+    UserInterfaceManager.getUserInterface().installEditorKits();
     System.setProperty("apple.laf.useScreenMenuBar", "true");
   }
 
@@ -321,9 +298,7 @@ public abstract class KoLmafia {
       RelayRequest.clearImageCache();
     }
 
-    if (SwinglessUIUtils.isSwingAvailable()) {
-      KoLmafia.initLookAndFeel();
-    }
+    UserInterfaceManager.getUserInterface().installLookAndFeel();
 
     FlaggedItems.initializeLists();
     VolcanoMazeManager.downloadImages();
@@ -332,7 +307,7 @@ public abstract class KoLmafia {
     // you have an interface.
 
     if (StaticEntity.isGUIRequired()) {
-      KoLmafiaGUI.initialize();
+      UserInterfaceManager.getUserInterface().initializeGUI();
     } else {
       KoLmafiaTUI.initialize();
     }
@@ -389,94 +364,6 @@ public abstract class KoLmafia {
         "You are currently on Java " + System.getProperty("java.version"),
         "Please update to Java " + UPCOMING_MINIMUM_JAVA_VERSION,
         "https://adoptium.net/installation/");
-  }
-
-  private static void initLookAndFeel() {
-    // Change the default look and feel to match the player's
-    // preferences. Always do this.
-
-    String defaultLookAndFeel;
-
-    // Tell UIManager about Look and Feel files in external jars ( defined in KoLGUIConstants)
-    installLookAndFeel(FLATMAP_LIGHT_LOOKS);
-    installLookAndFeel(FLATMAP_DARK_LOOKS);
-
-    if (System.getProperty("os.name").startsWith("Mac")
-        || System.getProperty("os.name").startsWith("Win")) {
-      defaultLookAndFeel = UIManager.getSystemLookAndFeelClassName();
-    } else {
-      defaultLookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
-    }
-
-    String lookAndFeel = Preferences.getString("swingLookAndFeel");
-
-    if (lookAndFeel.isEmpty()) {
-      lookAndFeel = defaultLookAndFeel;
-    }
-
-    UIManager.LookAndFeelInfo[] installed = UIManager.getInstalledLookAndFeels();
-    String[] installedLooks = new String[installed.length];
-
-    for (int i = 0; i < installedLooks.length; ++i) {
-      installedLooks[i] = installed[i].getClassName();
-    }
-
-    boolean foundLookAndFeel = false;
-    for (int i = 0; i < installedLooks.length && !foundLookAndFeel; ++i) {
-      foundLookAndFeel = installedLooks[i].equals(lookAndFeel);
-    }
-
-    if (!foundLookAndFeel) {
-      lookAndFeel = defaultLookAndFeel;
-    }
-
-    try {
-      UIManager.setLookAndFeel(lookAndFeel);
-      KoLmafiaGUI.applyFlatLafMenuBarSettings();
-      JFrame.setDefaultLookAndFeelDecorated(System.getProperty("os.name").startsWith("Mac"));
-    } catch (Exception e) {
-      // Should not happen, as we checked to see if
-      // the look and feel was installed first.
-
-      JFrame.setDefaultLookAndFeelDecorated(true);
-    }
-
-    if (StaticEntity.usesSystemTray()) {
-      SystemTrayFrame.addTrayIcon();
-    }
-
-    boolean isWindows = System.getProperty("os.name").startsWith("Win");
-
-    if (Taskbar.isTaskbarSupported()) {
-      Taskbar taskbar = Taskbar.getTaskbar();
-      if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
-        String image = isWindows ? "app_icon256.png" : "limeglass.gif";
-        taskbar.setIconImage(JComponentUtilities.getImage(image).getImage());
-      }
-    }
-
-    if (isWindows || lookAndFeel.equals(UIManager.getCrossPlatformLookAndFeelClassName())) {
-      UIManager.put("ProgressBar.foreground", Color.black);
-      UIManager.put("ProgressBar.selectionForeground", Color.lightGray);
-
-      UIManager.put("ProgressBar.background", Color.lightGray);
-      UIManager.put("ProgressBar.selectionBackground", Color.black);
-    }
-  }
-
-  private static void installLookAndFeel(Map<String, String> looks) {
-    for (Entry<String, String> entry : looks.entrySet()) {
-      String key = entry.getKey();
-      String value = entry.getValue();
-      try {
-        // try to load the class to confirm it exists
-        Class.forName(value);
-      } catch (ClassNotFoundException e) {
-        RequestLogger.printLine("Failed to load class " + value + " for Theme " + key);
-        continue;
-      }
-      UIManager.installLookAndFeel(key, value);
-    }
   }
 
   private static void checkDataOverrides() {
@@ -543,7 +430,7 @@ public abstract class KoLmafia {
     RequestLogger.printLine(state, message);
 
     if (KoLmafia.allowDisplayUpdate) {
-      SystemTrayFrame.updateToolTip(message);
+      UserInterfaceManager.getUserInterface().updateToolTip(message);
     }
 
     KoLmafia.lastMessage = message;
@@ -561,28 +448,7 @@ public abstract class KoLmafia {
 
     if (KoLmafia.allowDisplayUpdate) {
       String unicodeMessage = StringUtilities.getEntityDecode(message, false);
-      ActionPanel[] panels = StaticEntity.getExistingPanels();
-
-      for (ActionPanel panel : panels) {
-        if (panel instanceof GenericPanel) {
-          ((GenericPanel) panel).setStatusMessage(unicodeMessage);
-        }
-
-        panel.setEnabled(state != MafiaState.CONTINUE);
-      }
-
-      Arrays.stream(Frame.getFrames())
-          .filter(GenericFrame.class::isInstance)
-          .map(GenericFrame.class::cast)
-          .forEach(
-              f -> {
-                f.setStatusMessage(unicodeMessage);
-                f.updateDisplayState(state);
-              });
-
-      if (KoLDesktop.instanceExists()) {
-        KoLDesktop.getInstance().updateDisplayState(state);
-      }
+      UserInterfaceManager.getUserInterface().updateDisplayState(state, unicodeMessage);
     }
 
     KoLmafia.displayState = state;
@@ -734,7 +600,7 @@ public abstract class KoLmafia {
 
       KoLmafia.refreshSessionData();
 
-      AdventureFrame.updateFromPreferences();
+      UserInterfaceManager.getUserInterface().preferencesChanged();
 
       // It would be nice to not have to do this
       IslandManager.ensureUpdatedBigIsland();
@@ -1059,7 +925,7 @@ public abstract class KoLmafia {
 
     // Retrieve the Terrarium
     RequestThread.postRequest(new FamiliarRequest());
-    GearChangePanel.updateFamiliars();
+    UserInterfaceManager.getUserInterface().familiarsChanged();
 
     // Available stuff in Clan may have changed, so check clan
     ClanLoungeRequest.updateLounge();
@@ -1149,7 +1015,7 @@ public abstract class KoLmafia {
     KoLmafia.setIsRefreshing(false);
 
     // Ensure Gear Changer accurate
-    GearChangePanel.validateSelections();
+    UserInterfaceManager.getUserInterface().validateEquipmentSelections();
   }
 
   /** Used to reset the session tally to its original values. */
@@ -1336,7 +1202,7 @@ public abstract class KoLmafia {
     }
 
     if (isAdventure) {
-      AdventureFrame.updateRequestMeter(1, 1);
+      UserInterfaceManager.getUserInterface().requestProgress(1, 1);
     }
 
     // If you've completed the requests, make sure to update
@@ -1418,7 +1284,8 @@ public abstract class KoLmafia {
     }
 
     if (!wasAdventuring) {
-      AdventureFrame.updateRequestMeter(currentIteration - 1, totalIterations);
+      UserInterfaceManager.getUserInterface()
+          .requestProgress(currentIteration - 1, totalIterations);
     }
 
     RequestLogger.printLine();
@@ -1534,14 +1401,14 @@ public abstract class KoLmafia {
 
   /** Show an HTML string to the user */
   public static void showHTML(String location, String text) {
-    if (!GenericFrame.instanceExists()) {
+    if (!UserInterfaceManager.getUserInterface().hasOpenWindows()) {
       KoLmafiaCLI.showHTML(text);
       return;
     }
 
     GenericRequest request = new GenericRequest(location);
     request.responseText = text;
-    DescriptionFrame.showRequest(request);
+    UserInterfaceManager.getUserInterface().showDescription(request);
   }
 
   /**
@@ -1873,7 +1740,7 @@ public abstract class KoLmafia {
   }
 
   public static void about() {
-    new LicenseDisplayListener().run();
+    UserInterfaceManager.getUserInterface().showLicenses();
   }
 
   public static void quit() {
@@ -1887,7 +1754,7 @@ public abstract class KoLmafia {
 
     QuitRunnable quitRunnable = new QuitRunnable();
 
-    if (SwingUtilities.isEventDispatchThread()) {
+    if (UserInterfaceManager.getUserInterface().isUiThread()) {
       KoLmafia.updateDisplay("Logout in progress (interface will be unresponsive)...");
       KoLmafia.allowDisplayUpdate = false;
 
@@ -1918,13 +1785,13 @@ public abstract class KoLmafia {
       RequestLogger.closeDebugLog();
       RequestLogger.closeMirror();
 
-      SystemTrayFrame.removeTrayIcon();
+      UserInterfaceManager.getUserInterface().removeTrayIcon();
       RelayServer.stop();
     }
   }
 
   public static void preferences() {
-    KoLmafiaGUI.constructFrame("OptionsFrame");
+    UserInterfaceManager.getUserInterface().showWindow("OptionsFrame");
   }
 
   public static void preferencesThreaded() {
@@ -1934,7 +1801,7 @@ public abstract class KoLmafia {
   private static class PreferencesRunnable implements Runnable {
     @Override
     public void run() {
-      KoLmafiaGUI.constructFrame("OptionsFrame");
+      UserInterfaceManager.getUserInterface().showWindow("OptionsFrame");
     }
   }
 }

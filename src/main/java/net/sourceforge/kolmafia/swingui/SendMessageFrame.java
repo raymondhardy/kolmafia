@@ -23,13 +23,13 @@ import net.java.dev.spellcast.utilities.LockableListModel.ListElementFilter;
 import net.java.dev.spellcast.utilities.SortedListModel;
 import net.sourceforge.kolmafia.AdventureResult;
 import net.sourceforge.kolmafia.KoLConstants;
-import net.sourceforge.kolmafia.KoLGUIConstants;
 import net.sourceforge.kolmafia.persistence.ItemDatabase;
 import net.sourceforge.kolmafia.session.ContactManager;
 import net.sourceforge.kolmafia.swingui.button.InvocationButton;
 import net.sourceforge.kolmafia.swingui.widget.AutoHighlightTextField;
 import net.sourceforge.kolmafia.swingui.widget.EditableAutoFilterComboBox;
 import net.sourceforge.kolmafia.swingui.widget.GenericScrollPane;
+import net.sourceforge.kolmafia.swingui.widget.SwingInputFieldUtilities;
 import net.sourceforge.kolmafia.textui.command.SendMessageCommand;
 import net.sourceforge.kolmafia.utilities.InputFieldUtilities;
 
@@ -194,7 +194,7 @@ public class SendMessageFrame extends GenericFrame implements ListElementFilter 
 
     attachmentsArray[this.attachments.size()] =
         new AdventureResult(
-            AdventureResult.MEAT, InputFieldUtilities.getValue(this.attachedMeat, 0));
+            AdventureResult.MEAT, SwingInputFieldUtilities.getValue(this.attachedMeat, 0));
 
     String[] recipients =
         ContactManager.extractTargets((String) this.recipientEntry.getSelectedItem());
