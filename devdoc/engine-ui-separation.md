@@ -1,80 +1,63 @@
 # Keeping the engine separate from the UI
 
-KoLmafia's game logic (requests, parsing, session state, ASH/JS, the CLI) should run without
-Swing or AWT. Then it can be driven by the desktop GUI, the CLI/TUI, the relay browser, tests on a
-headless CI machine, or any other frontend. This page sets the rules for new code and describes how
-existing code is moved over, one small PR at a time.
+KoLmafia's game logic (requests, parsing, session state, ASH/JS, the CLI) runs without Swing or
+AWT, so it can be driven by the desktop GUI, the CLI, the relay browser, tests on a headless CI
+machine, or another frontend (a browser-based UI, a mobile app). This page sets the rules for
+new code.
 
 ## Terms
 
-- **Engine:** every class under `net.sourceforge.kolmafia` except the UI packages below.
-- **UI packages:** `swingui` (desktop GUI) and everything under it. `textui` and `webui` contain
-  engine code and stay engine packages; only their Swing usage (if any) is moved out.
-- **UI contract:** the small set of engine-side interfaces in `net.sourceforge.kolmafia.ui` that a
-  frontend implements. The package holds interfaces and headless defaults only: no Swing, no AWT.
+- **Engine:** every class under `net.sourceforge.kolmafia` except `swingui` and its subpackages.
+  `textui` and `webui` are engine packages.
+- **UI contract:** `net.sourceforge.kolmafia.ui`: the `UserInterface` interface, which lists
+  everything the engine asks of a user interface, and `UserInterfaceManager`, which holds the one in
+  use.
+- **Swing UI:** `swingui.SwingUserInterface`, the desktop implementation.
 
 ## Rules
 
-1. **The engine never imports `javax.swing.*`, `java.awt.*` or `net.sourceforge.kolmafia.swingui.*`.**
-   This is enforced by checkstyle `ImportControl` (`config/checkstyle/import-control.xml`). Classes that
-   have not been migrated yet are listed in `config/checkstyle/suppressions.xml`. The list only ever
-   shrinks: new entries are not accepted. The check only sees `import` statements, so fully qualified
-   names (`javax.swing.SwingUtilities.invokeLater(...)`) are not allowed in the engine either.
-2. **The UI may depend on the engine; the engine never depends on the UI.** Dependencies point one way.
-3. **When the engine's state changes, it fires an event and does not call into the UI.** Use the
-   existing registries in `net.sourceforge.kolmafia.listener`:
-   - `NamedListenerRegistry.fireChange("(name)")` for named events, with lowercase keys in parentheses
-     as today (`"(coinmaster)"`, `"(outfit)"`);
-   - `PreferenceListenerRegistry` when the state is a preference;
-   - `CharacterListenerRegistry` for character updates.
-   A frame registers a `Listener` and refreshes itself. Example: instead of `KoLCharacter` calling
-   `MallSearchFrame.updateMeat()`, it fires `"(meat)"` and `MallSearchFrame` listens for it.
-4. **When the engine needs something from the user, it asks through the UI contract.** Alerts, confirmations,
-   text input, choosing from a list, showing a window, and running work on the UI thread all go through
-   interfaces in `net.sourceforge.kolmafia.ui`. The engine installs a headless default (today's console
-   behaviour, e.g. the `StaticEntity.isHeadless()` branches of `InputFieldUtilities`); `KoLmafiaGUI`
-   installs the Swing implementation at startup. Windows are named by the existing `KoLConstants.FRAME_NAMES`
-   ids (the same ids the `window` command uses), never by `Class` objects from `swingui`.
-5. **State belongs to the engine, never to a widget.** If engine code reads a value from a component
-   (for example the maximizer expression in `MaximizerFrame.expressionSelect`), the value moves to an
-   engine class with a getter/setter, and the component reflects it.
-6. **Logic lives where the engine's other logic for that feature lives.** Follow the existing layout:
-   - `request/`: talking to KoL (`XxxRequest`);
-   - `session/`: state and workflows (`XxxManager`);
-   - `persistence/`: data files (`XxxDatabase`);
-   - `textui/command/`: CLI commands (`XxxCommand`);
-   - `swingui/`: frames and panels only (`XxxFrame`, `XxxPanel`), which call the engine class.
-   There are no parallel `model`/`viewmodel` trees and no new naming suffixes.
-7. **Engine data uses plain types.** Colours are strings (`"#rrggbb"` or a colour name); images are
-   paths or URLs; checkboxes become `boolean`s; trees and lists use `java.util` types. Converting
-   them to Swing types happens in `swingui`.
-8. **Engine tests run headless.** Tests of engine classes must not need a display or a
-   `@DisabledIf("java.awt.GraphicsEnvironment#isHeadless")` guard. UI behaviour is tested through
-   the UI contract, with a recording fake installed via `Cleanups`, or in the existing `swingui` tests.
+1. **The engine never uses `javax.swing`, `java.awt`, `javax.imageio` or `swingui`**, nor the Swing-only
+   libraries (FlatLaf, SwingX, JGoodies, ...) or the Swing widgets in `net.java.dev.spellcast.utilities`
+   (`ActionPanel`, `JComponentUtilities`, ...). Checkstyle's `ImportControl`
+   (`config/checkstyle/import-control.xml`) enforces this for imports; `config/checkstyle/suppressions.xml`
+   is empty and should stay empty. Fully qualified names are not allowed either.
+2. **The UI may depend on the engine; the engine never depends on the UI.**
+3. **When the engine needs the user, or needs to tell the user something, it calls
+   `UserInterfaceManager.getUserInterface()`.** Prompts, windows, display state, refresh notifications
+   (`meatChanged`, `familiarsChanged`, ...), the UI thread (`isUiThread`, `invokeLater`) and the like are
+   methods of `UserInterface`. Each has a default that works with no display: prompts ask on the console,
+   the way KoLmafia always has when running headless, and everything else does nothing. A frontend
+   overrides what it supports. Add a method when the engine needs something new; name it after what
+   happened in the engine, not after the frame that shows it. Where an existing listener registry
+   (`NamedListenerRegistry`, `PreferenceListenerRegistry`, ...) already carries the event, use it.
+4. **The Swing UI is found with `ServiceLoader`** (`META-INF/services/net.sourceforge.kolmafia.ui.UserInterface`)
+   whenever it can be loaded, as Swing code always ran when Swing was available. Where the engine
+   used to check `StaticEntity.isHeadless()` before showing a dialog, `SwingUserInterface` makes the same
+   check. Tests can install their own with `UserInterfaceManager.setUserInterface` (null restores the
+   default).
+5. **Behaviour and threads stay as they were.** A `UserInterface` method runs on the caller's thread and
+   does exactly what the engine did before; work the engine handed to the Swing thread goes through
+   `invokeLater`.
+6. **State belongs to the engine, never to a widget.** If engine code needs a value a component holds (for
+   example the maximizer expression), the value lives in an engine class and the component writes it there.
+7. **Logic lives where the engine's other logic for that feature lives:** `request/` (`XxxRequest`),
+   `session/` (`XxxManager`), `persistence/` (`XxxDatabase`), `textui/command/` (`XxxCommand`).
+   `swingui/` holds frames, panels and widgets, which call the engine.
+8. **Engine data uses plain types.** Colors are `"#rrggbb"` strings; images are paths; trees and lists use
+   engine or `java.util` types. Converting them to Swing types happens in `swingui`.
+9. **Lists:** engine lists are `LockableListModel`/`SortedListModel`, which know nothing of Swing.
+   To show one in a `JList`, `JComboBox` or table, use `SwingListModel.of(list)`: one Swing model per list,
+   sharing the list's selection. `SwingListModel.listOf(model)` goes back from a Swing model to the list.
+10. **Engine tests run headless.** UI behaviour is tested by installing a recording `UserInterface`, or in
+    the `swingui` tests.
 
-## Moving existing code
+## Moving code
 
-Each PR moves **one** link (one engine class's use of the UI, or one feature) and changes no behaviour.
+Each change moves one piece and changes no behaviour.
 
-1. **Characterize first.** Before moving anything, add or extend tests that pin the current behaviour
-   (JUnit 5, Hamcrest `assertThat`, `internal.helpers` such as `Player`, `Cleanups`,
-   `FakeHttpClientBuilder`). They must pass on `main` before the move.
-2. **Move.** Put the logic in the engine class chosen by rule 6. Leave the frame as a thin caller.
-   Keep public signatures that scripts or other code use, delegating to the new location where needed.
-3. **Remove the suppression.** Delete the class's entry from `suppressions.xml` in the same PR.
-4. **Verify.** Run `./gradlew spotlessApply` and `./gradlew check`. The characterization tests pass
-   unchanged (moved alongside the code, mirroring its new package).
-5. **Title** the PR `refactor: <what moved>` and link this page.
-
-## What goes where
-
-| Today in the engine | Becomes |
-| --- | --- |
-| `SomeFrame.refresh()` / `SomeFrame.INSTANCE…` | `NamedListenerRegistry.fireChange("(name)")`; the frame listens |
-| `GenericFrame.createDisplay(SomeFrame.class)` | open the window by its `FRAME_NAMES` id through the UI contract |
-| `GenericFrame.instanceExists()`, `appearsInTab(…)` | query through the UI contract (headless: `false`) |
-| `InputFieldUtilities.alert/confirm/input` | prompt through the UI contract (headless: console prompt, as today) |
-| `SwingUtilities.invokeLater(…)` | run on the UI thread through the UI contract (headless: run now) |
-| `java.awt.Color`, `ImageIcon`, `JCheckBox`, Swing tree nodes in data classes | plain types (rule 7) |
-| Swing-only classes in engine packages (editor kits, renderers, GUI bootstrap) | moved into `swingui` unchanged |
-| `LockableListModel` / `SortedListModel` | later: a plain observable list in the engine, wrapped by a Swing `ListModel` adapter in `swingui` |
+1. **Characterize first:** add or extend tests that pin the current behaviour (JUnit 5, Hamcrest
+   `assertThat`, `internal.helpers`). Add tests for code paths that had none.
+2. **Move the code unchanged** to the engine class chosen by rule 7. Leave the Swing class as a thin
+   caller; keep its public methods as delegates when scripts or tests use them.
+3. **Run `./gradlew spotlessApply` and `./gradlew check`.**
+4. **Title the commit `refactor: <what moved>`.**
