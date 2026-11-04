@@ -1,6 +1,8 @@
 package net.sourceforge.kolmafia.ui;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -21,8 +23,9 @@ import net.sourceforge.kolmafia.utilities.StringUtilities;
  * showing things, and hearing that something changed. See devdoc/engine-ui-separation.md.
  *
  * <p>Every method has a default that works without a display: prompts are asked on the console, the
- * way KoLmafia has always asked them when running headless, and everything else does nothing. A
- * user interface overrides only what it supports.
+ * way KoLmafia has always asked them when running headless; work for the user interface thread runs
+ * on a background thread of its own, one task at a time; and everything else does nothing. A user
+ * interface overrides only what it supports.
  */
 public interface UserInterface {
   default void alert(final String message) {
@@ -225,7 +228,15 @@ public interface UserInterface {
 
   /** Whether this is the thread that updates the user interface. */
   default boolean isUiThread() {
-    return false;
+    return UserInterfaceThread.isCurrent();
+  }
+
+  /**
+   * Runs work on the user interface's thread, one task at a time and in order. Without a thread of
+   * its own, a user interface gets a background thread that does the same.
+   */
+  default void invokeLater(final Runnable runnable) {
+    UserInterfaceThread.execute(runnable);
   }
 
   // Session
@@ -251,4 +262,26 @@ public interface UserInterface {
   default void showContacts(final String title, final LockableListModel<?> contacts) {}
 
   default void maximizerExpressionChanged(final String expression) {}
+
+  default void showPlayerProfile(final String player) {}
+
+  /** Asks yes or no about something that may change the user's files. */
+  default boolean confirmWarning(final String title, final String message) {
+    return this.confirm(message);
+  }
+
+  /** Prints the skills the skill frame shows as unavailable (a debugging aid). */
+  default void dumpDisabledSkills() {}
+
+  /** Whether {@link #browse} can open a web browser. */
+  default boolean canBrowse() {
+    return false;
+  }
+
+  default void browse(final URI uri) throws IOException {}
+
+  /** A color of the current look and feel as "#rrggbb", or null if it has none. */
+  default String getLookAndFeelColor(final String key) {
+    return null;
+  }
 }
