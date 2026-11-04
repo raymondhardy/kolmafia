@@ -56,7 +56,6 @@
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]EquipmentManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]EventManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]InventoryManager\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]LoginManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]LogoutManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]StoreManager\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]StaticEntity\.java$"/>
