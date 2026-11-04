@@ -1,5 +1,6 @@
 package net.sourceforge.kolmafia.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,6 +11,7 @@ import net.java.dev.spellcast.utilities.LockableListModel;
 import net.java.dev.spellcast.utilities.LockableListModel.ListElementFilter;
 import net.sourceforge.kolmafia.KoLmafiaCLI;
 import net.sourceforge.kolmafia.RequestLogger;
+import net.sourceforge.kolmafia.request.GenericRequest;
 import net.sourceforge.kolmafia.utilities.StringUtilities;
 
 /**
@@ -156,6 +158,25 @@ public interface UserInterface {
     return new ArrayList<>(selectedValues);
   }
 
+  // Windows. Frame names are the ids in KoLConstants.FRAME_NAMES, as used by the window command.
+
+  /** Whether any window is open, i.e. whether the user is looking at a graphical interface. */
+  default boolean hasOpenWindows() {
+    return false;
+  }
+
+  default void showWindow(final String frameName) {}
+
+  default void showMainWindows() {}
+
+  default void showLoginWindow() {}
+
+  default void showRequest(final GenericRequest request) {}
+
+  default void showDescription(final GenericRequest request) {}
+
+  default void showHTML(final GenericRequest request) {}
+
   default boolean isDarkTheme() {
     return false;
   }
@@ -167,5 +188,19 @@ public interface UserInterface {
   /** Whether this is the thread that updates the user interface. */
   default boolean isUiThread() {
     return false;
+  }
+
+  // Session
+
+  /** The user is logging out: close the windows that belong to the session. */
+  default void closeSessionWindows() {}
+
+  default void debugLogOpened(final File file) {}
+
+  // Chat
+
+  default void beep() {
+    // Send alert character
+    System.out.write(0x07);
   }
 }
