@@ -1,14 +1,13 @@
 package net.sourceforge.kolmafia.ui;
 
+import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
-import net.sourceforge.kolmafia.StaticEntity;
 
 /**
  * Holds the user interface the engine talks to.
  *
- * <p>Unless one has been set, the first user interface found by {@link ServiceLoader} is used,
- * except when Java runs headless; then, and when none is found, the engine uses the defaults in
- * {@link UserInterface}.
+ * <p>Unless one has been set, the first user interface found by {@link ServiceLoader} is used. When
+ * none can be loaded, the engine uses the defaults in {@link UserInterface}.
  */
 public class UserInterfaceManager {
   private static final UserInterface DEFAULT = new UserInterface() {};
@@ -36,10 +35,13 @@ public class UserInterfaceManager {
   }
 
   private static UserInterface findUserInterface() {
-    if (StaticEntity.isHeadless()) {
+    try {
+      return ServiceLoader.load(UserInterface.class)
+          .findFirst()
+          .orElse(UserInterfaceManager.DEFAULT);
+    } catch (ServiceConfigurationError | LinkageError e) {
+      // A user interface is listed but cannot run here, for example without Swing
       return UserInterfaceManager.DEFAULT;
     }
-
-    return ServiceLoader.load(UserInterface.class).findFirst().orElse(UserInterfaceManager.DEFAULT);
   }
 }

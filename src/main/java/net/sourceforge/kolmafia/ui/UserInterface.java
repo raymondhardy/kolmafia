@@ -12,6 +12,7 @@ import java.util.function.BiFunction;
 import net.java.dev.spellcast.utilities.LockableListModel;
 import net.java.dev.spellcast.utilities.LockableListModel.ListElementFilter;
 import net.sourceforge.kolmafia.KoLAdventure;
+import net.sourceforge.kolmafia.KoLConstants.MafiaState;
 import net.sourceforge.kolmafia.KoLmafiaCLI;
 import net.sourceforge.kolmafia.RequestLogger;
 import net.sourceforge.kolmafia.equipment.Slot;
@@ -279,5 +280,40 @@ public interface UserInterface {
   /** A color of the current look and feel as "#rrggbb", or null if it has none. */
   default String getLookAndFeelColor(final String key) {
     return null;
+  }
+
+  /** Draws the images at paths on top of each other and saves the result at outputPath. */
+  default void mergeImages(final List<String> paths, final String outputPath) {}
+
+  /** Shows text on the application's icon, such as the dock icon, where the system has one. */
+  default void setIconBadge(final String text) {}
+
+  // Startup and display state
+
+  /** Prepares the user interface's HTML views, before any are created. */
+  default void installEditorKits() {}
+
+  /** Applies the user's look and feel, tray icon and application icon. */
+  default void installLookAndFeel() {}
+
+  /** Starts the graphical interface, when KoLmafia was started with one. */
+  default void initializeGUI() {}
+
+  default void updateToolTip(final String message) {}
+
+  /** KoLmafia's state changed: show the message and enable or disable controls to match. */
+  default void updateDisplayState(final MafiaState state, final String message) {}
+
+  /** Progress through a series of requests, such as adventures. */
+  default void requestProgress(final int value, final int maximum) {}
+
+  default void validateEquipmentSelections() {}
+
+  default void showLicenses() {}
+
+  default void removeTrayIcon() {}
+
+  default boolean isSystemTraySupported() {
+    return false;
   }
 }
