@@ -35,7 +35,6 @@ import net.java.dev.spellcast.utilities.LockableListModel;
 import net.java.dev.spellcast.utilities.LockableListModel.ListElementFilter;
 import net.sourceforge.kolmafia.KoLAdventure;
 import net.sourceforge.kolmafia.KoLConstants.MafiaState;
-import net.sourceforge.kolmafia.RequestEditorKit;
 import net.sourceforge.kolmafia.RequestLogger;
 import net.sourceforge.kolmafia.StaticEntity;
 import net.sourceforge.kolmafia.equipment.Slot;
@@ -50,6 +49,7 @@ import net.sourceforge.kolmafia.swingui.widget.GenericScrollPane;
 import net.sourceforge.kolmafia.swingui.widget.GraphicsUtilities;
 import net.sourceforge.kolmafia.swingui.widget.InterruptableDialog;
 import net.sourceforge.kolmafia.swingui.widget.ListCellRendererFactory;
+import net.sourceforge.kolmafia.swingui.widget.RequestHTMLEditorKit;
 import net.sourceforge.kolmafia.swingui.widget.SwingInputFieldUtilities;
 import net.sourceforge.kolmafia.ui.UserInterface;
 import net.sourceforge.kolmafia.utilities.StringUtilities;
@@ -531,7 +531,7 @@ public class SwingUserInterface implements UserInterface {
 
   @Override
   public void installEditorKits() {
-    JEditorPane.registerEditorKitForContentType("text/html", RequestEditorKit.class.getName());
+    JEditorPane.registerEditorKitForContentType("text/html", RequestHTMLEditorKit.class.getName());
   }
 
   @Override

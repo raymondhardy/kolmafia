@@ -9,7 +9,4 @@
  -->
 
 <suppressions>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]chat[\\/]ChatBuffer\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]chat[\\/]ChatCaret\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]RequestEditorKit\.java$"/>
 </suppressions>
