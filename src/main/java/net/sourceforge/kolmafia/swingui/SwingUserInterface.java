@@ -51,6 +51,7 @@ import net.sourceforge.kolmafia.swingui.widget.InterruptableDialog;
 import net.sourceforge.kolmafia.swingui.widget.ListCellRendererFactory;
 import net.sourceforge.kolmafia.swingui.widget.RequestHTMLEditorKit;
 import net.sourceforge.kolmafia.swingui.widget.SwingInputFieldUtilities;
+import net.sourceforge.kolmafia.swingui.widget.SwingListModel;
 import net.sourceforge.kolmafia.ui.UserInterface;
 import net.sourceforge.kolmafia.utilities.StringUtilities;
 
@@ -118,7 +119,7 @@ public class SwingUserInterface implements UserInterface {
       return UserInterface.super.input(message, inputs, toHTMLFunction, initial);
     }
 
-    JList<T> selector = new JList<>(inputs);
+    JList<T> selector = new JList<>(SwingListModel.of(inputs));
 
     if (toHTMLFunction != null) {
       selector.setCellRenderer(ListCellRendererFactory.getDefaultRenderer(toHTMLFunction));
@@ -160,7 +161,7 @@ public class SwingUserInterface implements UserInterface {
       return UserInterface.super.multiple(message, inputs, filter);
     }
 
-    JList<T> selector = new JList<>(inputs);
+    JList<T> selector = new JList<>(SwingListModel.of(inputs));
     selector.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
     JPanel panel = new JPanel(new BorderLayout());
