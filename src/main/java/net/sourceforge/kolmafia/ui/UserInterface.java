@@ -1,6 +1,8 @@
 package net.sourceforge.kolmafia.ui;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -228,6 +230,11 @@ public interface UserInterface {
     return false;
   }
 
+  /** Runs work on the user interface's thread; without one, runs it now. */
+  default void invokeLater(final Runnable runnable) {
+    runnable.run();
+  }
+
   // Session
 
   /** The user is logging out: close the windows that belong to the session. */
@@ -251,4 +258,26 @@ public interface UserInterface {
   default void showContacts(final String title, final LockableListModel<?> contacts) {}
 
   default void maximizerExpressionChanged(final String expression) {}
+
+  default void showPlayerProfile(final String player) {}
+
+  /** Asks yes or no about something that may change the user's files. */
+  default boolean confirmWarning(final String title, final String message) {
+    return this.confirm(message);
+  }
+
+  /** Prints the skills the skill frame shows as unavailable (a debugging aid). */
+  default void dumpDisabledSkills() {}
+
+  /** Whether {@link #browse} can open a web browser. */
+  default boolean canBrowse() {
+    return false;
+  }
+
+  default void browse(final URI uri) throws IOException {}
+
+  /** A color of the current look and feel as "#rrggbb", or null if it has none. */
+  default String getLookAndFeelColor(final String key) {
+    return null;
+  }
 }

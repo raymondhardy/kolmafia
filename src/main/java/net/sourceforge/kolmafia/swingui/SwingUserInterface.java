@@ -1,9 +1,14 @@
 package net.sourceforge.kolmafia.swingui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -14,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import net.java.dev.spellcast.utilities.LockableListModel;
 import net.java.dev.spellcast.utilities.LockableListModel.ListElementFilter;
 import net.sourceforge.kolmafia.CreateFrameRunnable;
@@ -289,6 +295,11 @@ public class SwingUserInterface implements UserInterface {
   }
 
   @Override
+  public void invokeLater(final Runnable runnable) {
+    SwingUtilities.invokeLater(runnable);
+  }
+
+  @Override
   public void closeSessionWindows() {
     // Only Swing's Event Dispatch Thread can change the GUI
     if (SwingUtilities.isEventDispatchThread()) {
@@ -398,5 +409,57 @@ public class SwingUserInterface implements UserInterface {
   @Override
   public void maximizerExpressionChanged(final String expression) {
     MaximizerFrame.expressionSelect.setSelectedItem(expression);
+  }
+
+  @Override
+  public void showPlayerProfile(final String player) {
+    Object[] parameters = new Object[] {player};
+    SwingUtilities.invokeLater(new CreateFrameRunnable(ProfileFrame.class, parameters));
+  }
+
+  @Override
+  public boolean confirmWarning(final String title, final String message) {
+    return JOptionPane.showConfirmDialog(
+            null, message, title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)
+        == JOptionPane.YES_OPTION;
+  }
+
+  @Override
+  public void dumpDisabledSkills() {
+    Frame frame = SwingUserInterface.findFrame(SkillBuffFrame.class);
+    if (frame != null) {
+      SkillBuffFrame sbf = (SkillBuffFrame) frame;
+      sbf.dumpDisabledSkills();
+    }
+  }
+
+  private static Frame findFrame(final Class<?> type) {
+    for (Frame frame : Frame.getFrames()) {
+      if (frame.getClass() == type) {
+        return frame;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public boolean canBrowse() {
+    return Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE);
+  }
+
+  @Override
+  public void browse(final URI uri) throws IOException {
+    Desktop.getDesktop().browse(uri);
+  }
+
+  @Override
+  public String getLookAndFeelColor(final String key) {
+    Color color = UIManager.getColor(key);
+
+    if (color == null) {
+      return null;
+    }
+
+    return "#" + Integer.toHexString(color.getRGB()).substring(2);
   }
 }
