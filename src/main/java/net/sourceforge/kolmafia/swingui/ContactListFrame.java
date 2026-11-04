@@ -16,6 +16,7 @@ import net.sourceforge.kolmafia.chat.ChatManager;
 import net.sourceforge.kolmafia.session.ContactManager;
 import net.sourceforge.kolmafia.swingui.button.InvocationButton;
 import net.sourceforge.kolmafia.swingui.widget.GenericScrollPane;
+import net.sourceforge.kolmafia.swingui.widget.SwingListModel;
 import net.sourceforge.kolmafia.utilities.HTMLListEntry;
 
 public class ContactListFrame extends GenericFrame {
@@ -31,7 +32,7 @@ public class ContactListFrame extends GenericFrame {
 
     this.contacts = contacts;
 
-    this.contactsDisplay = new JList(contacts);
+    this.contactsDisplay = new JList(SwingListModel.of(contacts));
     this.contactsDisplay.setVisibleRowCount(25);
     this.contactsDisplay.setPrototypeCellValue("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
     this.contactsDisplay.addMouseListener(new SendInstantMessageAdapter());
