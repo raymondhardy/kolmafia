@@ -203,4 +203,12 @@ public interface UserInterface {
     // Send alert character
     System.out.write(0x07);
   }
+
+  default void openChatWindow(final String bufferKey, final boolean highlightOnOpen) {}
+
+  default void highlightChatTab(final String bufferKey) {}
+
+  default void chatClosed() {}
+
+  default void showContacts(final String title, final LockableListModel<?> contacts) {}
 }
