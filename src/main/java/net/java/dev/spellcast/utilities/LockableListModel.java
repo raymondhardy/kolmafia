@@ -940,7 +940,7 @@ public class LockableListModel<E>
 	}
 
 	/**
-	 * Please refer to {@link javax.swing.ListModel#getElementAt(int)} for more information regarding this function.
+	 * Please refer to {@code javax.swing.ListModel#getElementAt(int)} for more information regarding this function.
 	 */
 
 	public E getElementAt( final int index )
@@ -949,7 +949,7 @@ public class LockableListModel<E>
 	}
 
 	/**
-	 * Please refer to {@link javax.swing.ListModel#getSize()} for more information regarding this function.
+	 * Please refer to {@code javax.swing.ListModel#getSize()} for more information regarding this function.
 	 */
 
 	public int getSize()
@@ -958,7 +958,7 @@ public class LockableListModel<E>
 	}
 
 	/**
-	 * Please refer to {@link javax.swing.ComboBoxModel#getSelectedItem()} for more information regarding this function.
+	 * Please refer to {@code javax.swing.ComboBoxModel#getSelectedItem()} for more information regarding this function.
 	 */
 
 	public Object getSelectedItem()
@@ -980,7 +980,7 @@ public class LockableListModel<E>
 	}
 
 	/**
-	 * Please refer to {@link javax.swing.ComboBoxModel#setSelectedItem(Object)} for more information regarding this
+	 * Please refer to {@code javax.swing.ComboBoxModel#setSelectedItem(Object)} for more information regarding this
 	 * function.
 	 */
 
@@ -1001,7 +1001,7 @@ public class LockableListModel<E>
 	}
 
 	/**
-	 * Please refer to {@link javax.swing.MutableComboBoxModel#addElement(Object)} for more information regarding this
+	 * Please refer to {@code javax.swing.MutableComboBoxModel#addElement(Object)} for more information regarding this
 	 * function.
 	 */
 
@@ -1011,7 +1011,7 @@ public class LockableListModel<E>
 	}
 
 	/**
-	 * Please refer to {@link javax.swing.MutableComboBoxModel#insertElementAt(Object,int)} for more information
+	 * Please refer to {@code javax.swing.MutableComboBoxModel#insertElementAt(Object,int)} for more information
 	 * regarding this function.
 	 */
 
@@ -1021,7 +1021,7 @@ public class LockableListModel<E>
 	}
 
 	/**
-	 * Please refer to {@link javax.swing.MutableComboBoxModel#removeElement(Object)} for more information regarding
+	 * Please refer to {@code javax.swing.MutableComboBoxModel#removeElement(Object)} for more information regarding
 	 * this function.
 	 */
 
@@ -1031,7 +1031,7 @@ public class LockableListModel<E>
 	}
 
 	/**
-	 * Please refer to {@link javax.swing.MutableComboBoxModel#removeElementAt(int)} for more information regarding this
+	 * Please refer to {@code javax.swing.MutableComboBoxModel#removeElementAt(int)} for more information regarding this
 	 * function.
 	 */
 
