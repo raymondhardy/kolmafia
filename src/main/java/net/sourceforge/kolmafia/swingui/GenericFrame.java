@@ -65,7 +65,7 @@ import net.sourceforge.kolmafia.swingui.menu.ScriptMenu;
 import net.sourceforge.kolmafia.swingui.panel.CompactSidePane;
 import net.sourceforge.kolmafia.swingui.widget.GenericScrollPane;
 import net.sourceforge.kolmafia.swingui.widget.RequestPane;
-import net.sourceforge.kolmafia.utilities.InputFieldUtilities;
+import net.sourceforge.kolmafia.swingui.widget.SwingInputFieldUtilities;
 import net.sourceforge.kolmafia.utilities.LockableListFactory;
 import net.sourceforge.kolmafia.utilities.StringUtilities;
 
@@ -615,7 +615,7 @@ public abstract class GenericFrame extends JFrame implements Runnable, FocusList
     super.processWindowEvent(e);
 
     if (e.getID() == WindowEvent.WINDOW_ACTIVATED) {
-      InputFieldUtilities.setActiveWindow(this);
+      SwingInputFieldUtilities.setActiveWindow(this);
     }
   }
 
