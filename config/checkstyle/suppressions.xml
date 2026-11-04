@@ -13,9 +13,6 @@
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]chat[\\/]ChatBuffer\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]chat[\\/]ChatCaret\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]chat[\\/]ChatSender\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]combat[\\/]CustomCombatAction\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]combat[\\/]CustomCombatLookup\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]combat[\\/]CustomCombatStrategy\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]CreateFrameRunnable\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]FamiliarData\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]ImageCachingEditorKit\.java$"/>
