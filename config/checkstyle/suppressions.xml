@@ -13,14 +13,8 @@
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]chat[\\/]ChatBuffer\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]chat[\\/]ChatCaret\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]chat[\\/]ChatSender\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]CreateFrameRunnable\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]ImageCachingEditorKit\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]KoLConstants\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]KoLDesktop\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]KoLGUIConstants\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]KoLmafiaGUI\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]persistence[\\/]FaxBotDatabase\.java$"/>
-  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]preferences[\\/]PreferenceListenerCheckBox\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]RequestEditorKit\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]request[\\/]RelayRequest\.java$"/>
   <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]session[\\/]LoginManager\.java$"/>

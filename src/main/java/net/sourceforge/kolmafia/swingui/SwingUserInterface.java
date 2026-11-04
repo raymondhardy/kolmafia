@@ -1,7 +1,7 @@
 package net.sourceforge.kolmafia.swingui;
 
-import static net.sourceforge.kolmafia.KoLGUIConstants.FLATMAP_DARK_LOOKS;
-import static net.sourceforge.kolmafia.KoLGUIConstants.FLATMAP_LIGHT_LOOKS;
+import static net.sourceforge.kolmafia.swingui.KoLGUIConstants.FLATMAP_DARK_LOOKS;
+import static net.sourceforge.kolmafia.swingui.KoLGUIConstants.FLATMAP_LIGHT_LOOKS;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -33,11 +33,8 @@ import net.java.dev.spellcast.utilities.ActionPanel;
 import net.java.dev.spellcast.utilities.JComponentUtilities;
 import net.java.dev.spellcast.utilities.LockableListModel;
 import net.java.dev.spellcast.utilities.LockableListModel.ListElementFilter;
-import net.sourceforge.kolmafia.CreateFrameRunnable;
 import net.sourceforge.kolmafia.KoLAdventure;
 import net.sourceforge.kolmafia.KoLConstants.MafiaState;
-import net.sourceforge.kolmafia.KoLDesktop;
-import net.sourceforge.kolmafia.KoLmafiaGUI;
 import net.sourceforge.kolmafia.RequestEditorKit;
 import net.sourceforge.kolmafia.RequestLogger;
 import net.sourceforge.kolmafia.StaticEntity;
