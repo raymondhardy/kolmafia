@@ -1,4 +1,4 @@
-package net.sourceforge.kolmafia.utilities;
+package net.sourceforge.kolmafia.swingui.widget;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import net.sourceforge.kolmafia.RequestLogger;
+import net.sourceforge.kolmafia.utilities.FileUtilities;
 
 public class GraphicsUtilities {
 

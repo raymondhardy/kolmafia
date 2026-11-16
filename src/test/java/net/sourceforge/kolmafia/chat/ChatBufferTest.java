@@ -29,6 +29,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import net.sourceforge.kolmafia.swingui.listener.StickyListener;
+import net.sourceforge.kolmafia.swingui.widget.ChatBufferDisplay;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -230,7 +231,7 @@ public class ChatBufferTest {
 
     @BeforeEach
     void addDisplay() {
-      scroller = buffer.addDisplay(pane);
+      scroller = ChatBufferDisplay.addDisplay(buffer, pane);
       scroller.setSize(600, 400);
     }
 
@@ -239,7 +240,7 @@ public class ChatBufferTest {
       var earlier = new ChatBuffer("test");
       var earlierPane = new TestPane();
       earlier.append("before<br>");
-      earlier.addDisplay(earlierPane);
+      ChatBufferDisplay.addDisplay(earlier, earlierPane);
       earlier.append("after<br>");
       flush();
 
@@ -340,7 +341,7 @@ public class ChatBufferTest {
     void hiddenPanesCatchUpWhenShown() throws Exception {
       var hidden = new TestPane();
       hidden.displayable = false;
-      buffer.addDisplay(hidden);
+      ChatBufferDisplay.addDisplay(buffer, hidden);
       buffer.append("one<br>");
       flush();
 
@@ -482,7 +483,7 @@ public class ChatBufferTest {
     @Test
     void statusLinesShowOnlyTheLatestEntriesWithoutAScrollbar() throws Exception {
       var statusLine = new TestPane();
-      var statusScroller = buffer.addStatusLine(statusLine);
+      var statusScroller = ChatBufferDisplay.addStatusLine(buffer, statusLine);
       for (int i = 0; i < 50; i++) {
         buffer.append("Entry " + i + "<br>");
       }

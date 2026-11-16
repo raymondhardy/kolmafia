@@ -32,7 +32,7 @@ import net.sourceforge.kolmafia.session.EncounterManager.EncounterType;
 import net.sourceforge.kolmafia.session.EquipmentManager;
 import net.sourceforge.kolmafia.session.GoalManager;
 import net.sourceforge.kolmafia.session.MonsterManuelManager;
-import net.sourceforge.kolmafia.utilities.GraphicsUtilities;
+import net.sourceforge.kolmafia.ui.UserInterfaceManager;
 import net.sourceforge.kolmafia.utilities.StringUtilities;
 
 @SuppressWarnings("incomplete-switch")
@@ -2186,10 +2186,8 @@ public class MonsterData extends AdventureResult {
           paths.add(path + layer + ".png");
         }
 
-        var images = GraphicsUtilities.readImages(paths);
-        var generated = GraphicsUtilities.mergeImages(images);
         image = "generatedImage.png";
-        GraphicsUtilities.writeImage(generated, path + image);
+        UserInterfaceManager.getUserInterface().mergeImages(paths, path + image);
       }
 
       // A single image

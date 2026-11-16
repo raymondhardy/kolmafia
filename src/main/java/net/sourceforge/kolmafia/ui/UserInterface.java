@@ -1,9 +1,16 @@
 package net.sourceforge.kolmafia.ui;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
 import net.java.dev.spellcast.utilities.LockableListModel;
+import net.sourceforge.kolmafia.KoLAdventure;
+import net.sourceforge.kolmafia.KoLConstants.MafiaState;
+import net.sourceforge.kolmafia.equipment.Slot;
 import net.sourceforge.kolmafia.request.GenericRequest;
 import net.sourceforge.kolmafia.session.UserPrompt;
+import net.sourceforge.kolmafia.utilities.InputFieldUtilities;
 
 public interface UserInterface {
   default <R> void showPrompt(final UserPrompt<R> prompt) {
@@ -17,7 +24,7 @@ public interface UserInterface {
   }
 
   default boolean isEventDispatchThread() {
-    return false;
+    return UserInterfaceThread.isCurrent();
   }
 
   default boolean hasOpenWindows() {
@@ -51,4 +58,88 @@ public interface UserInterface {
   default void chatClosed() {}
 
   default void showContacts(final String title, final LockableListModel<?> contacts) {}
+
+  default void meatChanged() {}
+
+  default void familiarsChanged() {}
+
+  default void familiarListCleared() {}
+
+  default void skillsChanged() {}
+
+  default void safetyDetailsChanged() {}
+
+  default void selectedAdventureChanged(final KoLAdventure location) {}
+
+  default void preferencesChanged() {}
+
+  default void charPaneRefreshed() {}
+
+  default void pullsRemainingChanged(final int pullsRemaining) {}
+
+  default void pullsBudgetedChanged(final int pullsBudgeted) {}
+
+  default void storeEditingCancelled() {}
+
+  default void storeEarningsChanged(final long potentialEarnings) {}
+
+  default void equipmentListsCleared() {}
+
+  default void equipmentSlotChanged(final Slot slot) {}
+
+  default void stickersChanged(final int st1, final int st2, final int st3) {}
+
+  default void deferEquipmentUpdates() {}
+
+  default void resolveDeferredEquipmentUpdates() {}
+
+  default void invokeLater(final Runnable runnable) {
+    UserInterfaceThread.execute(runnable);
+  }
+
+  default void maximizerExpressionChanged(final String expression) {}
+
+  default void showPlayerProfile(final String player) {}
+
+  default boolean confirmWarning(final String title, final String message) {
+    return InputFieldUtilities.confirm(message);
+  }
+
+  default void dumpDisabledSkills() {}
+
+  default boolean canBrowse() {
+    return false;
+  }
+
+  default void browse(final URI uri) throws IOException {}
+
+  default String getLookAndFeelColor(final String key) {
+    return null;
+  }
+
+  default void mergeImages(final List<String> paths, final String outputPath) {}
+
+  default void setIconBadge(final String text) {}
+
+  default void installEditorKits() {}
+
+  default void installLookAndFeel() {}
+
+  default void initializeGUI() {}
+
+  default void updateToolTip(final String message) {}
+
+  default void updateDisplayState(final MafiaState state, final String message) {}
+
+  default void requestProgress(final int value, final int maximum) {}
+
+  default void validateEquipmentSelections() {}
+
+  default void showLicenses() {}
+
+  default void removeTrayIcon() {}
+
+  default boolean isSystemTraySupported() {
+    return false;
+  }
 }
