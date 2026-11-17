@@ -3,7 +3,6 @@ package net.sourceforge.kolmafia.swingui.widget;
 import java.io.File;
 import javax.swing.ImageIcon;
 import net.java.dev.spellcast.utilities.JComponentUtilities;
-import net.sourceforge.kolmafia.KoLCharacter;
 import net.sourceforge.kolmafia.KoLmafia;
 import net.sourceforge.kolmafia.persistence.FamiliarDatabase;
 import net.sourceforge.kolmafia.persistence.ItemDatabase;
@@ -54,11 +53,6 @@ public class ImageIconFactory {
 
   public static final ImageIcon getFamiliarImage(final int familiarId) {
     String location = FamiliarDatabase.getFamiliarImageLocation(familiarId);
-    return ImageIconFactory.getFamiliarIcon(location);
-  }
-
-  public static final ImageIcon getCurrentFamiliarImage() {
-    String location = KoLCharacter.getFamiliarImage();
     return ImageIconFactory.getFamiliarIcon(location);
   }
 

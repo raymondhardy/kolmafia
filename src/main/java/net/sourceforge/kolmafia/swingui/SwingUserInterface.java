@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.IdentityHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.swing.JEditorPane;
@@ -38,7 +37,6 @@ import net.sourceforge.kolmafia.swingui.listener.LicenseDisplayListener;
 import net.sourceforge.kolmafia.swingui.panel.ActionPanelRegistry;
 import net.sourceforge.kolmafia.swingui.panel.GearChangePanel;
 import net.sourceforge.kolmafia.swingui.panel.GenericPanel;
-import net.sourceforge.kolmafia.swingui.widget.GraphicsUtilities;
 import net.sourceforge.kolmafia.swingui.widget.RequestHTMLEditorKit;
 import net.sourceforge.kolmafia.ui.UserInterface;
 
@@ -346,13 +344,6 @@ public class SwingUserInterface implements UserInterface {
     }
 
     return "#" + Integer.toHexString(color.getRGB()).substring(2);
-  }
-
-  @Override
-  public void mergeImages(final List<String> paths, final String outputPath) {
-    var images = GraphicsUtilities.readImages(paths);
-    var generated = GraphicsUtilities.mergeImages(images);
-    GraphicsUtilities.writeImage(generated, outputPath);
   }
 
   @Override

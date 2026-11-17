@@ -3,7 +3,6 @@ package net.sourceforge.kolmafia.ui;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import net.java.dev.spellcast.utilities.LockableListModel;
 import net.sourceforge.kolmafia.KoLAdventure;
 import net.sourceforge.kolmafia.KoLConstants.MafiaState;
@@ -116,8 +115,6 @@ public interface UserInterface {
   default String getLookAndFeelColor(final String key) {
     return null;
   }
-
-  default void mergeImages(final List<String> paths, final String outputPath) {}
 
   default void setIconBadge(final String text) {}
 
