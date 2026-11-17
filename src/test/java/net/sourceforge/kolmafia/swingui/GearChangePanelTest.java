@@ -1,6 +1,7 @@
 package net.sourceforge.kolmafia.swingui;
 
 import static internal.helpers.Player.*;
+import static internal.helpers.Player.withUserInterface;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -12,6 +13,7 @@ import net.sourceforge.kolmafia.equipment.Slot;
 import net.sourceforge.kolmafia.objectpool.FamiliarPool;
 import net.sourceforge.kolmafia.objectpool.ItemPool;
 import net.sourceforge.kolmafia.swingui.panel.GearChangePanel;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -34,9 +36,17 @@ class GearChangePanelTest {
       new GearChangePanel();
     }
 
+    private Cleanups cleanups;
+
     @BeforeEach
     void beforeEach() {
+      cleanups = withUserInterface(new SwingUserInterface());
       GearChangePanel.updateSlot(Slot.HAT);
+    }
+
+    @AfterEach
+    void afterEach() {
+      cleanups.close();
     }
 
     @Test

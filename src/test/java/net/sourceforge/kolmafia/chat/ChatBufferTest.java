@@ -1,6 +1,7 @@
 package net.sourceforge.kolmafia.chat;
 
 import static internal.helpers.Player.withProperty;
+import static internal.helpers.Player.withUserInterface;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -28,6 +29,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
+import net.sourceforge.kolmafia.swingui.SwingUserInterface;
 import net.sourceforge.kolmafia.swingui.listener.StickyListener;
 import net.sourceforge.kolmafia.swingui.widget.ChatBufferDisplay;
 import org.junit.jupiter.api.AfterEach;
@@ -50,7 +52,9 @@ public class ChatBufferTest {
 
   @BeforeEach
   void pinBufferLength() {
-    cleanups = withProperty("outputBufferLength", 50000);
+    cleanups =
+        new Cleanups(
+            withProperty("outputBufferLength", 50000), withUserInterface(new SwingUserInterface()));
   }
 
   @AfterEach
