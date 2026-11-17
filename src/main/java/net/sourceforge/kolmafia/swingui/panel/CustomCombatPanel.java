@@ -141,7 +141,6 @@ public class CustomCombatPanel extends JPanel {
     this.refreshCombatTree();
   }
 
-  /** Copies a parsed custom combat script into Swing tree nodes, for display. */
   private static DefaultMutableTreeNode toTreeNode(final CustomCombatNode node) {
     DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(node, node.getAllowsChildren());
 

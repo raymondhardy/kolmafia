@@ -32,11 +32,11 @@ class UserInterfaceThreadTest {
     var onUiThread = new AtomicBoolean(false);
 
     try (var cleanups = withDefaultUserInterface()) {
-      DEFAULTS.invokeLater(() -> onUiThread.set(DEFAULTS.isUiThread()));
+      DEFAULTS.invokeLater(() -> onUiThread.set(DEFAULTS.isEventDispatchThread()));
       drain();
 
       assertThat(onUiThread.get(), is(true));
-      assertThat(DEFAULTS.isUiThread(), is(false));
+      assertThat(DEFAULTS.isEventDispatchThread(), is(false));
     }
   }
 
