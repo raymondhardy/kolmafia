@@ -1,40 +1,26 @@
 package net.sourceforge.kolmafia.swingui.widget;
 
-import javax.swing.AbstractListModel;
+import javax.swing.ListModel;
 import javax.swing.MutableComboBoxModel;
+import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import net.java.dev.spellcast.utilities.LockableListModel;
 
-/**
- * Shows a {@link LockableListModel} in Swing lists and combo boxes. Each list has one adapter, so
- * every view of a list shares its selection, as when the list itself was the Swing model.
- */
-public class SwingListModel<E> extends AbstractListModel<E>
-    implements MutableComboBoxModel<E>, LockableListModel.ListListener {
+/** Shows a {@link LockableListModel} in Swing lists and combo boxes. */
+public class SwingListModel<E> implements MutableComboBoxModel<E> {
   private final LockableListModel<E> list;
 
   private SwingListModel(final LockableListModel<E> list) {
     this.list = list;
   }
 
-  /** The Swing model for a list. */
-  @SuppressWarnings("unchecked")
   public static <E> SwingListModel<E> of(final LockableListModel<E> list) {
-    if (list == null) {
-      return null;
-    }
-
-    synchronized (list) {
-      if (!(list.getViewModel() instanceof SwingListModel<?>)) {
-        list.setViewModel(new SwingListModel<>(list));
-      }
-      return (SwingListModel<E>) list.getViewModel();
-    }
+    return list == null ? null : new SwingListModel<>(list);
   }
 
   /** The list shown by a Swing model, or null if the model does not show one. */
   @SuppressWarnings("unchecked")
-  public static <E> LockableListModel<E> listOf(final Object model) {
+  public static <E> LockableListModel<E> listOf(final ListModel<?> model) {
     return model instanceof SwingListModel<?> swingModel
         ? (LockableListModel<E>) swingModel.list
         : null;
@@ -44,42 +30,37 @@ public class SwingListModel<E> extends AbstractListModel<E>
     return this.list;
   }
 
-  // The list notifies this adapter only while Swing is listening, as it notified Swing directly.
-  // Events keep the list that caused them as their source, as before.
+  // Listeners are kept on the list, so one added through any SwingListModel of a list can be
+  // removed through any other.
 
   @Override
   public void addListDataListener(final ListDataListener l) {
-    synchronized (this) {
-      if (this.getListDataListeners().length == 0) {
-        this.list.addListListener(this);
-      }
-      super.addListDataListener(l);
-    }
+    this.list.addListListener(new Listener(l));
   }
 
   @Override
   public void removeListDataListener(final ListDataListener l) {
-    synchronized (this) {
-      super.removeListDataListener(l);
-      if (this.getListDataListeners().length == 0) {
-        this.list.removeListListener(this);
-      }
+    this.list.removeListListener(new Listener(l));
+  }
+
+  private record Listener(ListDataListener listener) implements LockableListModel.ListListener {
+    @Override
+    public void contentsChanged(final Object source, final int index0, final int index1) {
+      this.listener.contentsChanged(
+          new ListDataEvent(source, ListDataEvent.CONTENTS_CHANGED, index0, index1));
     }
-  }
 
-  @Override
-  public void contentsChanged(final Object source, final int index0, final int index1) {
-    this.fireContentsChanged(source, index0, index1);
-  }
+    @Override
+    public void intervalAdded(final Object source, final int index0, final int index1) {
+      this.listener.intervalAdded(
+          new ListDataEvent(source, ListDataEvent.INTERVAL_ADDED, index0, index1));
+    }
 
-  @Override
-  public void intervalAdded(final Object source, final int index0, final int index1) {
-    this.fireIntervalAdded(source, index0, index1);
-  }
-
-  @Override
-  public void intervalRemoved(final Object source, final int index0, final int index1) {
-    this.fireIntervalRemoved(source, index0, index1);
+    @Override
+    public void intervalRemoved(final Object source, final int index0, final int index1) {
+      this.listener.intervalRemoved(
+          new ListDataEvent(source, ListDataEvent.INTERVAL_REMOVED, index0, index1));
+    }
   }
 
   @Override

@@ -59,7 +59,6 @@ public class LockableListModel<E>
 	private boolean actionListenerFired = false;
 
 	private CopyOnWriteArrayList<ListListener> listListeners = new CopyOnWriteArrayList<>();
-	private Object viewModel = null;
 	
 	protected ArrayList<E> actualElements;
 	private ArrayList<E> visibleElements;
@@ -219,9 +218,10 @@ public class LockableListModel<E>
 		}
 
 		this.actionListenerFired = true;
-		for ( int i = this.listListeners.size() - 1; i >= 0; --i )
+		ListListener[] listeners = this.listListeners.toArray( new ListListener[ 0 ] );
+		for ( int i = listeners.length - 1; i >= 0; --i )
 		{
-			this.listListeners.get( i ).contentsChanged( source, index0, index1 );
+			listeners[ i ].contentsChanged( source, index0, index1 );
 		}
 		this.actionListenerFired = false;
 	}
@@ -234,9 +234,10 @@ public class LockableListModel<E>
 		}
 
 		this.actionListenerFired = true;
-		for ( int i = this.listListeners.size() - 1; i >= 0; --i )
+		ListListener[] listeners = this.listListeners.toArray( new ListListener[ 0 ] );
+		for ( int i = listeners.length - 1; i >= 0; --i )
 		{
-			this.listListeners.get( i ).intervalAdded( source, index0, index1 );
+			listeners[ i ].intervalAdded( source, index0, index1 );
 		}
 		this.actionListenerFired = false;
 	}
@@ -249,9 +250,10 @@ public class LockableListModel<E>
 		}
 
 		this.actionListenerFired = true;
-		for ( int i = this.listListeners.size() - 1; i >= 0; --i )
+		ListListener[] listeners = this.listListeners.toArray( new ListListener[ 0 ] );
+		for ( int i = listeners.length - 1; i >= 0; --i )
 		{
-			this.listListeners.get( i ).intervalRemoved( source, index0, index1 );
+			listeners[ i ].intervalRemoved( source, index0, index1 );
 		}
 		this.actionListenerFired = false;
 	}
@@ -1075,7 +1077,6 @@ public class LockableListModel<E>
 		}
 
 		cloneCopy.listListeners = new CopyOnWriteArrayList<>();
-		cloneCopy.viewModel = null;
 
 		cloneCopy.actualElements = new ArrayList();
 		cloneCopy.actualElements.addAll( this.actualElements );
@@ -1113,21 +1114,6 @@ public class LockableListModel<E>
 	public void removeListListener( final ListListener l )
 	{
 		this.listListeners.remove( l );
-	}
-
-	/**
-	 * The object a user interface uses to show this list, such as a Swing list model. Kept here so that every view of
-	 * a list shares one, along with its selection.
-	 */
-
-	public Object getViewModel()
-	{
-		return this.viewModel;
-	}
-
-	public void setViewModel( final Object viewModel )
-	{
-		this.viewModel = viewModel;
 	}
 
 	/**

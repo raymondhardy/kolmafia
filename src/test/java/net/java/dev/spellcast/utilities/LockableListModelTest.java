@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class LockableListModelTest {
-  /** Records the events a list sends. */
   private static class RecordingListener implements LockableListModel.ListListener {
     final List<String> events = new ArrayList<>();
     final List<Object> sources = new ArrayList<>();
@@ -101,19 +99,37 @@ class LockableListModelTest {
     }
 
     @Test
-    void clonesHaveNoListenersOrViewModel() {
+    void tellsEveryListenerWhenOneIsRemovedMidEvent() {
+      var list = new LockableListModel<String>();
+      var first = new RecordingListener();
+      var second =
+          new RecordingListener() {
+            @Override
+            public void intervalAdded(final Object source, final int index0, final int index1) {
+              super.intervalAdded(source, index0, index1);
+              list.removeListListener(first);
+            }
+          };
+      list.addListListener(first);
+      list.addListListener(second);
+
+      list.add("a");
+
+      assertThat(first.events, contains("added 0-0"));
+      assertThat(second.events, contains("added 0-0"));
+    }
+
+    @Test
+    void clonesHaveNoListeners() {
       var list = new LockableListModel<String>();
       var listener = new RecordingListener();
       list.addListListener(listener);
-      list.setViewModel("view");
 
       @SuppressWarnings("unchecked")
       var copy = (LockableListModel<String>) list.clone();
       copy.add("a");
 
       assertThat(listener.events, empty());
-      assertThat(copy.getViewModel(), nullValue());
-      assertThat(list.getViewModel(), is("view"));
     }
   }
 }

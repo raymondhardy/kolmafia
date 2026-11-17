@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.sameInstance;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import net.java.dev.spellcast.utilities.LockableListModel;
@@ -41,14 +42,11 @@ class SwingListModelTest {
   }
 
   @Test
-  void hasOneModelPerList() {
+  void showsItsList() {
     var list = new LockableListModel<String>();
-    var other = new LockableListModel<String>();
 
-    assertThat(SwingListModel.of(list), sameInstance(SwingListModel.of(list)));
-    assertThat(SwingListModel.of(list) == SwingListModel.of(other), is(false));
     assertThat(SwingListModel.listOf(SwingListModel.of(list)), sameInstance(list));
-    assertThat(SwingListModel.listOf("not a model"), nullValue());
+    assertThat(SwingListModel.listOf(new DefaultListModel<String>()), nullValue());
     assertThat(SwingListModel.of(null), nullValue());
   }
 
@@ -65,6 +63,7 @@ class SwingListModelTest {
     assertThat(model.getElementAt(1), is("b"));
     assertThat(list.getSelectedItem(), is("b"));
     assertThat(model.getSelectedItem(), is("b"));
+    assertThat(SwingListModel.of(list).getSelectedItem(), is("b"));
   }
 
   @Test
@@ -81,17 +80,15 @@ class SwingListModelTest {
   }
 
   @Test
-  void listensToTheListOnlyWhileSwingListens() {
+  void removesAListenerThroughAnyModelOfTheList() {
     var list = new LockableListModel<String>();
     var listener = new RecordingListener();
-    var model = SwingListModel.of(list);
 
-    model.addListDataListener(listener);
-    model.removeListDataListener(listener);
+    SwingListModel.of(list).addListDataListener(listener);
+    SwingListModel.of(list).removeListDataListener(listener);
     list.add("a");
 
     assertThat(listener.events, empty());
-    assertThat(model.getListDataListeners().length, is(0));
   }
 
   @Test
