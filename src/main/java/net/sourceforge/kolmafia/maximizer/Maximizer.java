@@ -100,7 +100,6 @@ public class Maximizer {
 
   private Maximizer() {}
 
-  /** The expression the next maximization uses: what the user last asked to maximize. */
   public static String getExpression() {
     return Maximizer.expression;
   }
