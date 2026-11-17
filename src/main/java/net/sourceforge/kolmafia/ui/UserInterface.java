@@ -142,6 +142,4 @@ public interface UserInterface {
   default boolean isSystemTraySupported() {
     return false;
   }
-
-  default void maximizerExpressionChanged(final String expression) {}
 }
