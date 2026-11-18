@@ -215,7 +215,7 @@ public class ShowDescriptionList<E> extends JList<E> {
   private class DescriptionRunnable extends ContextMenuListener {
     @Override
     public void executeAction() {
-      ShowDescriptionList.showGameDescription(this.item);
+      StaticEntity.showGameDescription(this.item);
     }
   }
 
