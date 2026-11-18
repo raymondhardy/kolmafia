@@ -460,7 +460,7 @@ public class DataUtilities
 		return DataUtilities.getResource( UtilityConstants.IMAGE_DIRECTORY, filename );
 	}
 
-	public static URL getResource( String directory, String filename )
+	private static URL getResource( String directory, String filename )
 	{
 		directory = directory.replaceAll( File.separator.replaceAll( "\\\\", "\\\\\\\\" ), "/" );
 		filename = filename.replaceAll( File.separator.replaceAll( "\\\\", "\\\\\\\\" ), "/" );
