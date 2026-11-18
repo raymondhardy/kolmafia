@@ -897,6 +897,19 @@ public class ConsumablesDatabase {
   }
 
   public static double getAverageAdventures(Consumable consumable) {
+    return getAverageAdventures(
+        consumable,
+        Preferences.getBoolean("showGainsPerUnit"),
+        KoLConstants.activeEffects.contains(ConsumablesDatabase.ODE),
+        Preferences.getBoolean("milkOfMagnesiumActive"));
+  }
+
+  /**
+   * Average adventures as if Ode to Booze and milk of magnesium were (or were not) active, so a
+   * diet can be planned before casting or using them.
+   */
+  public static double getAverageAdventures(
+      Consumable consumable, boolean perUnit, boolean odeEffect, boolean milk) {
     if (consumable == null) {
       return 0.0;
     }
@@ -907,13 +920,11 @@ public class ConsumablesDatabase {
 
     String name = consumable.name;
 
-    boolean perUnit = Preferences.getBoolean("showGainsPerUnit");
     Double range = null;
 
     var adventuresBoosted = areAdventuresBoosted(consumable);
 
     if (consumable.getRawFullness() != null) {
-      boolean milk = Preferences.getBoolean("milkOfMagnesiumActive");
       boolean lunch =
           KoLConstants.activeEffects.contains(ConsumablesDatabase.GLORIOUS_LUNCH)
               || ConsumablesDatabase.BARREL_OF_LAUGHS.getCount(KoLConstants.activeEffects) >= 5;
@@ -933,7 +944,6 @@ public class ConsumablesDatabase {
         range += 5;
       }
     } else if (consumable.getRawInebriety() != null) {
-      boolean odeEffect = KoLConstants.activeEffects.contains(ConsumablesDatabase.ODE);
       boolean rowdyDrinker =
           KoLCharacter.hasSkill(SkillPool.ROWDY_DRINKER)
               || ConsumablesDatabase.BEER_BARREL_POLKA.getCount(KoLConstants.activeEffects) >= 5;
