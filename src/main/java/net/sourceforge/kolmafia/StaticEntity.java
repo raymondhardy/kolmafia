@@ -45,8 +45,6 @@ public abstract class StaticEntity {
 
   private static final Pattern PLAYERID_MATCHER = Pattern.compile("\\(#(\\d+)\\)");
 
-  private static final Pattern PLAYERID_MATCHER = Pattern.compile("\\(#(\\d+)\\)");
-
   public static String backtraceTrigger = null;
   private static Integer cachedRevisionNumber = null;
   private static String cachedVersionName = null;
