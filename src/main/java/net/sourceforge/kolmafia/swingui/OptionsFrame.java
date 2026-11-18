@@ -1750,7 +1750,11 @@ public class OptionsFrame extends GenericFrame {
                   KoLmafiaGUI.applyFlatLafMenuBarSettings(frame.getRootPane());
                 }
                 SwingUtilities.updateComponentTreeUI(f); // update components
-                f.pack(); // adapt container size if required
+                if (f instanceof GenericFrame frame) {
+                  frame.repack();
+                } else {
+                  f.pack();
+                }
               });
         }
 
