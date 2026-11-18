@@ -121,6 +121,16 @@ class ConsumablesDatabaseTest {
       }
     }
 
+    @Test
+    void adventuresWithOdeAndMilkAsked() {
+      var horseradish = ConsumablesDatabase.getConsumableByName("jumping horseradish");
+      var wine = ConsumablesDatabase.getConsumableByName("Sacramento wine");
+      assertThat(ConsumablesDatabase.getAverageAdventures(horseradish, false, false, false), is(5.5));
+      assertThat(ConsumablesDatabase.getAverageAdventures(horseradish, false, false, true), is(10.5));
+      assertThat(ConsumablesDatabase.getAverageAdventures(wine, false, false, false), is(5.5));
+      assertThat(ConsumablesDatabase.getAverageAdventures(wine, false, true, false), is(6.5));
+    }
+
     @Nested
     class Notes {
       @Test
