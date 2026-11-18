@@ -58,6 +58,8 @@ public class ChatFrame extends GenericFrame {
   private static final SimpleDateFormat MARK_TIMESTAMP =
       new SimpleDateFormat("HH:mm:ss", Locale.US);
 
+  private static TabbedChatFrame tabbedFrame = null;
+
   private ChatPanel mainPanel;
   private JComboBox<String> nameClickSelect;
 
@@ -211,6 +213,38 @@ public class ChatFrame extends GenericFrame {
     ChatManager.closeWindow(contact);
 
     super.dispose();
+  }
+
+  public static void openWindow(final String bufferKey, final boolean highlightOnOpen) {
+    if (Preferences.getBoolean("useTabbedChatFrame")) {
+      if (ChatFrame.tabbedFrame == null) {
+        CreateFrameRunnable creator = new CreateFrameRunnable(TabbedChatFrame.class);
+        boolean appearsInTab = GenericFrame.appearsInTab("ChatManager");
+        ChatFrame.tabbedFrame = (TabbedChatFrame) creator.createFrame(appearsInTab);
+      }
+
+      ChatFrame.tabbedFrame.addTab(bufferKey);
+
+      if (highlightOnOpen) {
+        ChatFrame.tabbedFrame.highlightTab(bufferKey);
+      }
+
+      return;
+    }
+
+    ChatFrame frame = new ChatFrame(bufferKey);
+    CreateFrameRunnable.decorate(frame);
+    frame.setVisible(true);
+  }
+
+  public static void highlightChatTab(final String bufferKey) {
+    if (ChatFrame.tabbedFrame != null) {
+      ChatFrame.tabbedFrame.highlightTab(bufferKey);
+    }
+  }
+
+  public static void closeChat() {
+    ChatFrame.tabbedFrame = null;
   }
 
   public static void runChatPlayerScript(final String playerName, final String playerId) {
