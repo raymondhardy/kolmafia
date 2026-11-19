@@ -107,7 +107,7 @@ public class StyledChatBuffer extends ChatBuffer {
   }
 
   public void applyHighlights() {
-    UserInterfaceManager.getUserInterface()
+    UserInterfaceManager.get()
         .invokeLater(
             () -> {
               String[] lines = this.getContent().split("<br>");

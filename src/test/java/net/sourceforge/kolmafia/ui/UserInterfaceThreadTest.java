@@ -16,8 +16,8 @@ class UserInterfaceThreadTest {
   private static final UserInterface DEFAULTS = new UserInterface() {};
 
   private static Cleanups withDefaultUserInterface() {
-    UserInterfaceManager.setUserInterface(DEFAULTS);
-    return new Cleanups(() -> UserInterfaceManager.setUserInterface(null));
+    UserInterfaceManager.set(DEFAULTS);
+    return new Cleanups(() -> UserInterfaceManager.set(null));
   }
 
   /** Waits until the user interface thread has run everything queued so far. */

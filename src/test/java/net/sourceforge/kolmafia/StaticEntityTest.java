@@ -36,8 +36,8 @@ class StaticEntityTest {
   }
 
   private static Cleanups withUserInterface(final UserInterface userInterface) {
-    UserInterfaceManager.setUserInterface(userInterface);
-    return new Cleanups(() -> UserInterfaceManager.setUserInterface(null));
+    UserInterfaceManager.set(userInterface);
+    return new Cleanups(() -> UserInterfaceManager.set(null));
   }
 
   @Nested

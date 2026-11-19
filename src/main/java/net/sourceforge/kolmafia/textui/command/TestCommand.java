@@ -283,7 +283,7 @@ public class TestCommand extends AbstractCommand {
     }
 
     if (command.equals("dump_disabled_skills")) {
-      UserInterfaceManager.getUserInterface().dumpDisabledSkills();
+      UserInterfaceManager.get().dumpDisabledSkills();
       return;
     }
 
@@ -744,7 +744,7 @@ public class TestCommand extends AbstractCommand {
 
       var request = new GenericRequest(fileName);
       request.responseText = html;
-      UserInterfaceManager.getUserInterface().showHTML(request);
+      UserInterfaceManager.get().showHTML(request);
 
       return;
     }

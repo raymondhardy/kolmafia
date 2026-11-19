@@ -74,7 +74,7 @@ public class RelayLoader extends Thread {
       location = "http://127.0.0.1:" + RelayServer.getPort() + this.location;
     }
 
-    if (!UserInterfaceManager.getUserInterface().canBrowse()) {
+    if (!UserInterfaceManager.get().canBrowse()) {
       KoLmafia.updateDisplay(
           MafiaState.ERROR,
           "Cannot launch a browser in this environment. "
@@ -86,7 +86,7 @@ public class RelayLoader extends Thread {
 
     try {
       URI uri = new URI(location);
-      UserInterfaceManager.getUserInterface().browse(uri);
+      UserInterfaceManager.get().browse(uri);
     } catch (URISyntaxException e) {
       KoLmafia.updateDisplay("Exception: " + e.getMessage());
     } catch (IOException e) {

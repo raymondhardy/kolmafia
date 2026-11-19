@@ -87,7 +87,7 @@ public class ChatBuffer {
 
   /** Adds a display used to display the chat messages currently being stored in the buffer. */
   public void addDisplay(final Display displayPane, final boolean statusLine) {
-    UserInterfaceManager.getUserInterface()
+    UserInterfaceManager.get()
         .invokeLater(
             () -> {
               this.displayPanes.add(displayPane);
@@ -139,7 +139,7 @@ public class ChatBuffer {
 
   /** Closes the buffer. */
   public void dispose() {
-    UserInterfaceManager.getUserInterface()
+    UserInterfaceManager.get()
         .invokeLater(
             () -> {
               this.displayPanes.clear();
@@ -155,7 +155,7 @@ public class ChatBuffer {
 
   /** Clears the current buffer content. */
   public void clear() {
-    UserInterfaceManager.getUserInterface()
+    UserInterfaceManager.get()
         .invokeLater(
             () -> {
               this.entries.clear();
@@ -172,7 +172,7 @@ public class ChatBuffer {
   /** Appends the given contents to the chat buffer. */
   public void append(String newContents) {
     if (newContents == null) {
-      UserInterfaceManager.getUserInterface().invokeLater(this::requestReset);
+      UserInterfaceManager.get().invokeLater(this::requestReset);
       return;
     }
 
@@ -186,7 +186,7 @@ public class ChatBuffer {
       this.logWriter.println(entry);
     }
 
-    UserInterfaceManager.getUserInterface().invokeLater(() -> this.addEntry(entry));
+    UserInterfaceManager.get().invokeLater(() -> this.addEntry(entry));
   }
 
   private void addEntry(final String entry) {
@@ -289,7 +289,7 @@ public class ChatBuffer {
     }
 
     this.flushScheduled = true;
-    UserInterfaceManager.getUserInterface().invokeLater(this::flush);
+    UserInterfaceManager.get().invokeLater(this::flush);
   }
 
   private void flush() {

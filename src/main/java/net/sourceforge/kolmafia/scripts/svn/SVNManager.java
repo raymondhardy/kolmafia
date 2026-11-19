@@ -708,7 +708,7 @@ public class SVNManager extends ScriptManager {
           "<br><b>Only click yes if you trust the author.</b>"
               + "<p>Clicking no will stop the files from being added locally. (until you checkout the project again)");
       if (Preferences.getBoolean("svnAlwaysAdd")
-          || UserInterfaceManager.getUserInterface()
+          || UserInterfaceManager.get()
               .confirmWarning("SVN wants to add new files", message.toString())) {
         skipFiles.clear();
       }
@@ -805,7 +805,7 @@ public class SVNManager extends ScriptManager {
           "<br>Checking out this project will result in some local files (described above) being overwritten."
               + "<p>Click yes to overwrite them, no to skip installing them.");
       if (Preferences.getBoolean("svnAlwaysOverwrite")
-          || UserInterfaceManager.getUserInterface()
+          || UserInterfaceManager.get()
               .confirmWarning("SVN checkout wants to overwrite local files", message.toString())) {
         skipFiles.clear();
       }

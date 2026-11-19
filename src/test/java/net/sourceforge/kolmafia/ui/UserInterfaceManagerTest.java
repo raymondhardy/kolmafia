@@ -14,17 +14,17 @@ class UserInterfaceManagerTest {
     var ui = new UserInterface() {};
 
     try (var cleanups = withUserInterface(ui)) {
-      assertThat(UserInterfaceManager.getUserInterface(), sameInstance(ui));
+      assertThat(UserInterfaceManager.get(), sameInstance(ui));
     }
   }
 
   @Test
   void findsAUserInterfaceWhenNoneIsInstalled() {
     try (var cleanups = withUserInterface(null)) {
-      UserInterface found = UserInterfaceManager.getUserInterface();
+      UserInterface found = UserInterfaceManager.get();
 
       assertThat(found, notNullValue());
-      assertThat(UserInterfaceManager.getUserInterface(), sameInstance(found));
+      assertThat(UserInterfaceManager.get(), sameInstance(found));
     }
   }
 

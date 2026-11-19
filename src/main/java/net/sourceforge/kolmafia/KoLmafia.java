@@ -121,7 +121,7 @@ public abstract class KoLmafia {
     System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
     System.setProperty("java.net.preferIPv4Stack", "true");
 
-    UserInterfaceManager.getUserInterface().installEditorKits();
+    UserInterfaceManager.get().installEditorKits();
     System.setProperty("apple.laf.useScreenMenuBar", "true");
   }
 
@@ -238,7 +238,7 @@ public abstract class KoLmafia {
     StaticEntity.setGUIRequired(true);
 
     if (!StaticEntity.isHeadless()) {
-      UserInterfaceManager.setUserInterface(new SwingUserInterface());
+      UserInterfaceManager.set(new SwingUserInterface());
     }
 
     for (String arg : args) {
@@ -303,7 +303,7 @@ public abstract class KoLmafia {
       RelayRequest.clearImageCache();
     }
 
-    UserInterfaceManager.getUserInterface().installLookAndFeel();
+    UserInterfaceManager.get().installLookAndFeel();
 
     FlaggedItems.initializeLists();
     VolcanoMazeManager.downloadImages();
@@ -312,7 +312,7 @@ public abstract class KoLmafia {
     // you have an interface.
 
     if (StaticEntity.isGUIRequired()) {
-      UserInterfaceManager.getUserInterface().initializeGUI();
+      UserInterfaceManager.get().initializeGUI();
     } else {
       KoLmafiaTUI.initialize();
     }
@@ -435,7 +435,7 @@ public abstract class KoLmafia {
     RequestLogger.printLine(state, message);
 
     if (KoLmafia.allowDisplayUpdate) {
-      UserInterfaceManager.getUserInterface().updateToolTip(message);
+      UserInterfaceManager.get().updateToolTip(message);
     }
 
     KoLmafia.lastMessage = message;
@@ -453,7 +453,7 @@ public abstract class KoLmafia {
 
     if (KoLmafia.allowDisplayUpdate) {
       String unicodeMessage = StringUtilities.getEntityDecode(message, false);
-      UserInterfaceManager.getUserInterface().updateDisplayState(state, unicodeMessage);
+      UserInterfaceManager.get().updateDisplayState(state, unicodeMessage);
     }
 
     KoLmafia.displayState = state;
@@ -605,7 +605,7 @@ public abstract class KoLmafia {
 
       KoLmafia.refreshSessionData();
 
-      UserInterfaceManager.getUserInterface().preferencesChanged();
+      UserInterfaceManager.get().preferencesChanged();
 
       // It would be nice to not have to do this
       IslandManager.ensureUpdatedBigIsland();
@@ -930,7 +930,7 @@ public abstract class KoLmafia {
 
     // Retrieve the Terrarium
     RequestThread.postRequest(new FamiliarRequest());
-    UserInterfaceManager.getUserInterface().familiarsChanged();
+    UserInterfaceManager.get().familiarsChanged();
 
     // Available stuff in Clan may have changed, so check clan
     ClanLoungeRequest.updateLounge();
@@ -1020,7 +1020,7 @@ public abstract class KoLmafia {
     KoLmafia.setIsRefreshing(false);
 
     // Ensure Gear Changer accurate
-    UserInterfaceManager.getUserInterface().validateEquipmentSelections();
+    UserInterfaceManager.get().validateEquipmentSelections();
   }
 
   /** Used to reset the session tally to its original values. */
@@ -1207,7 +1207,7 @@ public abstract class KoLmafia {
     }
 
     if (isAdventure) {
-      UserInterfaceManager.getUserInterface().requestProgress(1, 1);
+      UserInterfaceManager.get().requestProgress(1, 1);
     }
 
     // If you've completed the requests, make sure to update
@@ -1289,8 +1289,7 @@ public abstract class KoLmafia {
     }
 
     if (!wasAdventuring) {
-      UserInterfaceManager.getUserInterface()
-          .requestProgress(currentIteration - 1, totalIterations);
+      UserInterfaceManager.get().requestProgress(currentIteration - 1, totalIterations);
     }
 
     RequestLogger.printLine();
@@ -1406,14 +1405,14 @@ public abstract class KoLmafia {
 
   /** Show an HTML string to the user */
   public static void showHTML(String location, String text) {
-    if (!UserInterfaceManager.getUserInterface().hasOpenWindows()) {
+    if (!UserInterfaceManager.get().hasOpenWindows()) {
       KoLmafiaCLI.showHTML(text);
       return;
     }
 
     GenericRequest request = new GenericRequest(location);
     request.responseText = text;
-    UserInterfaceManager.getUserInterface().showDescription(request);
+    UserInterfaceManager.get().showDescription(request);
   }
 
   /**
@@ -1745,7 +1744,7 @@ public abstract class KoLmafia {
   }
 
   public static void about() {
-    UserInterfaceManager.getUserInterface().showLicenses();
+    UserInterfaceManager.get().showLicenses();
   }
 
   public static void quit() {
@@ -1759,7 +1758,7 @@ public abstract class KoLmafia {
 
     QuitRunnable quitRunnable = new QuitRunnable();
 
-    if (UserInterfaceManager.getUserInterface().isEventDispatchThread()) {
+    if (UserInterfaceManager.get().isEventDispatchThread()) {
       KoLmafia.updateDisplay("Logout in progress (interface will be unresponsive)...");
       KoLmafia.allowDisplayUpdate = false;
 
@@ -1790,13 +1789,13 @@ public abstract class KoLmafia {
       RequestLogger.closeDebugLog();
       RequestLogger.closeMirror();
 
-      UserInterfaceManager.getUserInterface().removeTrayIcon();
+      UserInterfaceManager.get().removeTrayIcon();
       RelayServer.stop();
     }
   }
 
   public static void preferences() {
-    UserInterfaceManager.getUserInterface().showWindow("OptionsFrame");
+    UserInterfaceManager.get().showWindow("OptionsFrame");
   }
 
   public static void preferencesThreaded() {
@@ -1806,7 +1805,7 @@ public abstract class KoLmafia {
   private static class PreferencesRunnable implements Runnable {
     @Override
     public void run() {
-      UserInterfaceManager.getUserInterface().showWindow("OptionsFrame");
+      UserInterfaceManager.get().showWindow("OptionsFrame");
     }
   }
 }

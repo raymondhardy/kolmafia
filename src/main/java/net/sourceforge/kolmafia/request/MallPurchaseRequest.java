@@ -311,8 +311,7 @@ public class MallPurchaseRequest extends PurchaseRequest {
     if (this.isForbidden()) {
       // Try get the color from look and feel
       String color =
-          UserInterfaceManager.getUserInterface()
-              .getLookAndFeelColor("InternalFrame.closePressedBackground");
+          UserInterfaceManager.get().getLookAndFeelColor("InternalFrame.closePressedBackground");
 
       if (color == null) {
         return "red";

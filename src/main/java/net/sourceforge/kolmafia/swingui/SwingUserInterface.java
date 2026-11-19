@@ -237,7 +237,7 @@ public class SwingUserInterface implements UserInterface {
   }
 
   @Override
-  public void storeEditingCancelled() {
+  public void cancelStoreEditing() {
     StoreManageFrame.cancelTableEditing();
   }
 

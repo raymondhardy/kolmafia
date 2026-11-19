@@ -83,7 +83,7 @@ public interface UserInterface {
 
   default void pullsBudgetedChanged(final int pullsBudgeted) {}
 
-  default void storeEditingCancelled() {}
+  default void cancelStoreEditing() {}
 
   default void storeEarningsChanged(final long potentialEarnings) {}
 
