@@ -120,8 +120,6 @@ public abstract class KoLmafia {
     System.setProperty("com.apple.mrj.application.live-resize", "true");
     System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
     System.setProperty("java.net.preferIPv4Stack", "true");
-
-    UserInterfaceManager.get().installEditorKits();
     System.setProperty("apple.laf.useScreenMenuBar", "true");
   }
 
@@ -239,6 +237,7 @@ public abstract class KoLmafia {
 
     if (!StaticEntity.isHeadless()) {
       UserInterfaceManager.set(new SwingUserInterface());
+      UserInterfaceManager.get().installEditorKits();
     }
 
     for (String arg : args) {
