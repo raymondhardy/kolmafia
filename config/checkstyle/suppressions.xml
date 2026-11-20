@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<!--
+    Engine classes that still import the desktop UI (see devdoc/engine-ui-separation.md).
+    Remove a class from this list when it is migrated. Do not add new entries.
+ -->
+
+<suppressions>
+  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]KoLmafia\.java$"/>
+  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]utilities[\\/]GraphicsUtilities\.java$"/>
+  <suppress checks="ImportControl" files="net[\\/]sourceforge[\\/]kolmafia[\\/]utilities[\\/]InputFieldUtilities\.java$"/>
+</suppressions>
