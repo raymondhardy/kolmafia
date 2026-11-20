@@ -1,10 +1,10 @@
 package net.sourceforge.kolmafia;
 
+import static internal.helpers.Player.withUserInterface;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 
-import internal.helpers.Cleanups;
 import java.util.ArrayList;
 import java.util.List;
 import net.sourceforge.kolmafia.objectpool.EffectPool;
@@ -15,12 +15,10 @@ import net.sourceforge.kolmafia.persistence.ItemDatabase;
 import net.sourceforge.kolmafia.request.GenericRequest;
 import net.sourceforge.kolmafia.request.UseSkillRequest;
 import net.sourceforge.kolmafia.ui.UserInterface;
-import net.sourceforge.kolmafia.ui.UserInterfaceManager;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class StaticEntityTest {
-  /** Records the descriptions and profiles the engine asks to show. */
   private static class RecordingUserInterface implements UserInterface {
     final List<String> shown = new ArrayList<>();
 
@@ -33,11 +31,6 @@ class StaticEntityTest {
     public void showPlayerProfile(final String player) {
       this.shown.add("profile " + player);
     }
-  }
-
-  private static Cleanups withUserInterface(final UserInterface userInterface) {
-    UserInterfaceManager.set(userInterface);
-    return new Cleanups(() -> UserInterfaceManager.set(null));
   }
 
   @Nested

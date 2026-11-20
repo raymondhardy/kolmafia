@@ -173,10 +173,6 @@ public class ShowDescriptionList<E> extends JList<E> {
     return result;
   }
 
-  public static final void showGameDescription(Object item) {
-    StaticEntity.showGameDescription(item);
-  }
-
   public static void showMallStore(Object item) {
     if (item instanceof PurchaseRequest) {
       RelayLoader.openSystemBrowser(
