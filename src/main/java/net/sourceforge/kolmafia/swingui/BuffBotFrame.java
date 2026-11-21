@@ -69,7 +69,7 @@ public class BuffBotFrame extends GenericFrame {
           "stop",
           new JList<>(SwingListModel.of(BuffBotHome.getMessages())));
 
-      this.scrollComponent.setCellRenderer(BuffBotFrame.getMessageRenderer());
+      this.scrollComponent.setCellRenderer(new BuffMessageRenderer());
     }
 
     @Override
@@ -249,14 +249,6 @@ public class BuffBotFrame extends GenericFrame {
   }
 
   /**
-   * Returns an instance of the cell renderer which should be used to display the buff messages
-   * inside of a list setting.
-   */
-  private static DefaultListCellRenderer getMessageRenderer() {
-    return new BuffMessageRenderer();
-  }
-
-  /**
    * An internal class which represents the renderer which should be used to display the buff
    * messages.
    */
@@ -280,7 +272,7 @@ public class BuffBotFrame extends GenericFrame {
       }
 
       ((JLabel) defaultComponent).setText(bm.getMessage());
-      defaultComponent.setForeground(JComponentUtilities.toColor(bm.getColor()));
+      defaultComponent.setForeground(JComponentUtilities.toColor(bm.getColor().value()));
       return defaultComponent;
     }
   }

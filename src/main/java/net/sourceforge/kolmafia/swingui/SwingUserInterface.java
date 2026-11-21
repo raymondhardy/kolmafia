@@ -39,6 +39,7 @@ import net.sourceforge.kolmafia.swingui.panel.GenericPanel;
 import net.sourceforge.kolmafia.swingui.widget.RequestHTMLEditorKit;
 import net.sourceforge.kolmafia.ui.UserInterface;
 import net.sourceforge.kolmafia.utilities.HTMLListEntry;
+import net.sourceforge.kolmafia.utilities.HexColor;
 
 public class SwingUserInterface implements UserInterface {
   @Override
@@ -314,14 +315,14 @@ public class SwingUserInterface implements UserInterface {
   }
 
   @Override
-  public String getLookAndFeelColor(final String key) {
+  public HexColor getLookAndFeelColor(final String key) {
     Color color = UIManager.getColor(key);
 
     if (color == null) {
       return null;
     }
 
-    return "#" + Integer.toHexString(color.getRGB()).substring(2);
+    return new HexColor(color.getRed(), color.getGreen(), color.getBlue());
   }
 
   @Override

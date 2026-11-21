@@ -10,6 +10,7 @@ import net.sourceforge.kolmafia.equipment.Slot;
 import net.sourceforge.kolmafia.request.GenericRequest;
 import net.sourceforge.kolmafia.session.UserPrompt;
 import net.sourceforge.kolmafia.utilities.HTMLListEntry;
+import net.sourceforge.kolmafia.utilities.HexColor;
 import net.sourceforge.kolmafia.utilities.InputFieldUtilities;
 
 public interface UserInterface {
@@ -117,7 +118,8 @@ public interface UserInterface {
 
   default void browse(final URI uri) throws IOException {}
 
-  default String getLookAndFeelColor(final String key) {
+  /** A color of the current look and feel, or null if it has none. */
+  default HexColor getLookAndFeelColor(final String key) {
     return null;
   }
 
